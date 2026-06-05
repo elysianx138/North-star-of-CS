@@ -5,16 +5,23 @@ import random,time
 app = FastAPI()
 
 fake_db = {
-    "1":"That's too crazy! Redis is an in-memory data structure store, used as a database, cache and message broker.",
-    "2":"Do you know that Redis is a great caching solution?"
+    "1": {
+        "content":"That's too crazy! Redis is an in-memory data structure store, used as a database, cache and message broker.",
+        "tags":[]
+    },
+    "2": {
+        "content":"Do you know that Redis is a great caching solution?",
+        "tags":[]
+    }
 }
 
 # === First:Article content caching ===
 # === Learn String cache ===
 # === Function: Detailed article content ===
 @app.get("/articles/{article_id}")
-def get_article_content(article_id:str,retry:int=3):
+def get_article_content(article_id:int,retry:int=3):
     redis = get_redis()
+    article_id = str(article_id)
     cache_key = f"article:{article_id}"
     lock_key = f"lock:article:{article_id}"
 
@@ -29,10 +36,10 @@ def get_article_content(article_id:str,retry:int=3):
     locked = redis.set(lock_key, "1", nx=True, ex=10)
     if locked:
         try:
-            article = fake_db.get(article_id)
-            if article:
-                redis.setex(cache_key, 300 + random.randint(0, 120), article)
-                return {"data":article, "source":"database"}
+            article_data = fake_db.get(article_id)
+            if article_data:
+                redis.setex(cache_key, 300 + random.randint(0, 120), article_data["content"])
+                return {"data":article_data["content"], "source":"database"}
             else:
                 redis.setex(cache_key, 120 + random.randint(0, 60), "__NULL__")
                 return {"data":None, "source":"not_found"}
@@ -144,7 +151,10 @@ class Article(BaseModel):
 def post_articles(article:Article):
     redis = get_redis()
     new_id = str(len(fake_db) + 1)
-    fake_db[new_id] = article.content
+    fake_db[new_id] = {
+        "content": article.content,
+        "tags": []
+    }
 
     redis.lpush("articles:latest",new_id)
     redis.ltrim("articles:latest",0,9)
@@ -168,9 +178,9 @@ def get_latest_articles(retry:int=3):
         locked = redis.set(lock_key,"1",nx=True,ex=10)
 
         if locked:
-            # === Check the database ===
-            if fake_db:
-                try:
+            try:
+                # === Check the database ===
+                if fake_db:
                     # fetch the lastest id form "fake_db"
                     latest_id = sorted(fake_db.keys(),key=int,reverse=True)[0]
 
@@ -179,16 +189,14 @@ def get_latest_articles(retry:int=3):
                     redis.ltrim(cache_key,0,9)
                     redis.expire(cache_key,300+random.randint(0,120))
                     return {"article_id":latest_id,"source":"database"}
-
-
-                finally:
-                    redis.delete(lock_key)
-            else:
-                # === If the database is empty, cache null value to prevent cache penetration ===
-                redis.lpush(cache_key,"__NULL__")
-                redis.ltrim(cache_key,0,9)
-                redis.expire(cache_key,120+random.randint(0,60))
-                return {"article_id":None,"source":"not_found"}
+                else:
+                    # === If the database is empty, cache null value to reduce redundant queries ===
+                    redis.lpush(cache_key,"__NULL__")
+                    redis.ltrim(cache_key,0,9)
+                    redis.expire(cache_key,120+random.randint(0,60))
+                    return {"article_id":None,"source":"not_found"}
+            finally:
+                redis.delete(lock_key)
 
         else:
             if retry<=0:
@@ -200,6 +208,95 @@ def get_latest_articles(retry:int=3):
 
 # === Fourth:Filter articles by tag
 # === Learn set cache ===
-# === Function:Filter articles by tag ===
+# === Function:post articles' tags ===
+class Tagsbody(BaseModel):
+    tags:list[str]
+
+@app.post("/articles/{article_id}/tags")
+def post_article_tags(body:Tagsbody, article_id:str):
+    redis = get_redis()
+    tags = body.tags
+
+    # Add tags for articles
+    redis.sadd(f"articles:{article_id}:tags", *tags)
+    redis.expire(f"articles:{article_id}:tags", 300 + random.randint(0, 120))
+    article_data = fake_db.get(article_id)
+    if article_data:
+        for tag in tags:
+            if tag not in article_data["tags"]:
+                article_data["tags"].append(tag)
+
+    # Check tags from articles_id
+    for tag in tags:
+        redis.sadd(f"tags:{tag}",article_id)
+        # I think this is not necessary
+        # When the cache of tags expires, the time consumed for reverse reconstruction is too long. Therefore, I think it is necessary for the tag cache to be resident.
+        # But you also can write this code
+        # redis.expire(f"tags:{tag}",300+random.randint(0,120))
+
+    return {"message":f"Message {article_id} has been tagged with {tags}"}
+
+# === Function:get articles' tags ===
+@app.get("/articles/{article_id}/tags")
+def get_article_tags(article_id:str,retry:int=3):
+    redis = get_redis()
+    lock_key = f"lock:articles:{article_id}:tags"
+    tags = redis.smembers(f"articles:{article_id}:tags")
+
+    if tags:
+        if "__NULL__" in tags:
+            return {"tags":None,"source":"cache"}
+        return {"tags":list(tags),"source":"cache"}
+    else:
+        locked = redis.set(lock_key,"1",nx=True,ex=10)
+
+        if locked:
+            try:
+                article_data = fake_db.get(article_id)
+                if article_data:
+                    tags = article_data["tags"]
+                    redis.sadd(f"articles:{article_id}:tags", *tags)
+                    redis.expire(f"articles:{article_id}:tags", 300 + random.randint(0, 120))
+                    return {"tags":list(tags),"source":"database"}
+                else:
+                    redis.sadd(f"articles:{article_id}:tags","__NULL__")
+                    redis.expire(f"articles:{article_id}:tags", 120 + random.randint(0, 60))
+                    return {"tags":None,"source":"not_found"}
+
+            finally:
+                redis.delete(lock_key)
+
+        else:
+            if retry<=0:
+                return {"tags":None,"source":"Timeout"}
+            time.sleep(1)
+            return get_article_tags(article_id,retry-1)
+
+
+# === Function:get what tags are related to the article ===
+@app.get("/articles")
+def get_articles_by_tags(tags:str = None):
+    redis = get_redis()
+
+    if not tags:
+        return {"articles":list(fake_db.keys()),"source":"all"}
+
+    tag_list = tags.split(",")
+    cache_keys = [f"tags:{tag}" for tag in tag_list]
+
+    article_ids = redis.sinter(cache_keys)
+    if article_ids:
+        return {"articles":list(article_ids),"source":"cache"}
+
+    # fallback: traverse fake_db
+    result = []
+    for aid,data in fake_db.items():
+        if all(tag in data["tags"] for tag in tag_list):
+            result.append(aid)
+
+    return {"articles":result,"source":"database"}
+                
+
+
 
 
