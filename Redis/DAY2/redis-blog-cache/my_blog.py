@@ -136,3 +136,70 @@ def get_user_profile(username:str,retry:int=3):
 
 # === Third:Post issues and check the lastest issue
 # === Learn list cache ===
+# === Function:Post issues and check the lastest issue ===
+class Article(BaseModel):
+    content:str
+
+@app.post("/articles")
+def post_articles(article:Article):
+    redis = get_redis()
+    new_id = str(len(fake_db) + 1)
+    fake_db[new_id] = article.content
+
+    redis.lpush("articles:latest",new_id)
+    redis.ltrim("articles:latest",0,9)
+    redis.expire("articles:latest",300+random.randint(0,120))
+    
+    return {"article_id":new_id}
+# === Function: Get the lastest issue and cache it ====
+@app.get("/articles/latest")
+def get_latest_articles(retry:int=3):
+    redis = get_redis()
+    cache_key = "articles:latest"
+    lock_key = "lock:articles:latest"
+
+    latest = redis.lindex(cache_key,0)
+    if latest is not None:
+        if latest == "__NULL__":
+            return {"article_id":None,"source":"cache"}
+        return {"article_id":latest,"source":"cache"}
+    
+    else:
+        locked = redis.set(lock_key,"1",nx=True,ex=10)
+
+        if locked:
+            # === Check the database ===
+            if fake_db:
+                try:
+                    # fetch the lastest id form "fake_db"
+                    latest_id = sorted(fake_db.keys(),key=int,reverse=True)[0]
+
+                    # cache the lastest id
+                    redis.lpush(cache_key,latest_id)
+                    redis.ltrim(cache_key,0,9)
+                    redis.expire(cache_key,300+random.randint(0,120))
+                    return {"article_id":latest_id,"source":"database"}
+
+
+                finally:
+                    redis.delete(lock_key)
+            else:
+                # === If the database is empty, cache null value to prevent cache penetration ===
+                redis.lpush(cache_key,"__NULL__")
+                redis.ltrim(cache_key,0,9)
+                redis.expire(cache_key,120+random.randint(0,60))
+                return {"article_id":None,"source":"not_found"}
+
+        else:
+            if retry<=0:
+                return {"article_id":None,"source":"Timeout"}
+            time.sleep(1)
+            return get_latest_articles(retry-1)
+
+# === Third end ===
+
+# === Fourth:Filter articles by tag
+# === Learn set cache ===
+# === Function:Filter articles by tag ===
+
+
