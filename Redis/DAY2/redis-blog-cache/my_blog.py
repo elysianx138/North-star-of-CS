@@ -7,11 +7,13 @@ app = FastAPI()
 fake_db = {
     "1": {
         "content":"That's too crazy! Redis is an in-memory data structure store, used as a database, cache and message broker.",
-        "tags":[]
+        "tags":[],
+        "likes":0
     },
     "2": {
         "content":"Do you know that Redis is a great caching solution?",
-        "tags":[]
+        "tags":[],
+        "likes":0
     }
 }
 
@@ -56,6 +58,8 @@ def get_article_content(article_id:int,retry:int=3):
 def get_article_likes(article_id:str):
     redis = get_redis()
     count = redis.get(f"article:{article_id}:likes")
+
+    
     return {"likes":int(count) if count else 0}
 
 # === Function: Post likes ===
@@ -63,6 +67,12 @@ def get_article_likes(article_id:str):
 def post_article_likes(article_id:str):
     redis = get_redis()
     count = redis.incr(f"article:{article_id}:likes")
+    redis.zincrby("hot:articles",1,article_id)
+
+    # Sync to fake_db
+    if article_id in fake_db:
+        fake_db[article_id]["likes"] = count
+
     return {"likes":int(count)}
 # === First end ===
 
@@ -153,7 +163,8 @@ def post_articles(article:Article):
     new_id = str(len(fake_db) + 1)
     fake_db[new_id] = {
         "content": article.content,
-        "tags": []
+        "tags": [],
+        "likes": 0
     }
 
     redis.lpush("articles:latest",new_id)
@@ -295,6 +306,47 @@ def get_articles_by_tags(tags:str = None):
             result.append(aid)
 
     return {"articles":result,"source":"database"}
+# === Fourth end ===
+
+# === Fifth:Hot list ranking
+# === Learn Zset cache ===
+# === Check -6870
+
+# === Function:Go to the hot list ===
+@app.get("/articles/hot")
+def get_hot_articles(retry:int=3):
+    redis = get_redis()
+    cache_key = "hot:articles"
+    lock_key = "lock:hot:articles"
+
+    hot_articles = redis.zrevrange(cache_key, 0, 9, withscores=True)
+
+    if hot_articles:
+        result = [{"article_id":aid, "likes":int(score)} for aid, score in hot_articles]
+        return {"articles":result, "source":"cache"}
+
+    else:
+        locked = redis.set(lock_key, "1", nx=True, ex=10)
+
+        if locked:
+            try:
+                articles = sorted(fake_db.items(),key=lambda x:x[1]["likes"],reverse=True)[:10]
+                for aid,data in articles:
+                   if data["likes"]>0:
+                    redis.zadd(cache_key,{aid:data["likes"]})
+                redis.expire(cache_key, 300 + random.randint(0, 120))
+                result = [{"article_id":aid,"likes":data["likes"]} for aid,data in articles]
+                return {"articles":result,"source":"database"}
+
+            finally:
+                redis.delete(lock_key)
+
+        else:
+            if retry <= 0:
+                return {"articles":None, "source":"Timeout"}
+            time.sleep(1)
+            return get_hot_articles(retry - 1)
+
                 
 
 
