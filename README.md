@@ -43,7 +43,7 @@
 | Topic | Status | Progress | Link |
 |:----:|:----:|:----:|:----:|
 | 🐳 **Docker** | ✅ Complete | `████████████████████` 100% | [→ Go](Docker/) |
-| 🗄️ **Redis** | 🚧 In Progress | `██████████████░░░░` 70% | [→ Go](Redis/) |
+| 🗄️ **Redis** | ✅ Complete (DAY1-3) | `████████████████████` 100% | [→ Go](Redis/) |
 | ⚡ **FastAPI** | 🚧 In Progress | `██████████░░░░░░░░` 40% | [→ Go](Redis/DAY1/) |
 | 🐍 **Python** | 📋 Planned | `██░░░░░░░░░░░░░░░░` 10% | Coming Soon |
 | 🤖 **AI / LLM** | 📋 Planned | `░░░░░░░░░░░░░░░░░░` 0% | Coming Soon |
@@ -91,14 +91,19 @@
 | | Cache Penetration | ✅ | Null value caching |
 | | Cache Breakdown | ✅ | SET NX mutex lock |
 | | Cache Avalanche | ✅ | TTL randomization |
-| **02** | 🏗️ Blog Caching System (WIP) | 🚧 | All 5 Redis data types |
+| **02** | 🏗️ Blog Caching System — All 5 types | ✅ | All 5 Redis data types |
 | | String — Article content + likes | ✅ | GET/SETEX/INCR |
 | | Hash — User profile | ✅ | HSET/HGETALL/EXPIRE |
-| | List — Latest articles | ⬜ | LPUSH/LRANGE/LTRIM |
-| | Set — Article tags | ⬜ | SADD/SINTER |
-| | ZSet — Hot ranking | ⬜ | ZINCRBY/ZREVRANGE |
+| | List — Latest articles | ✅ | LPUSH/LRANGE/LTRIM |
+| | Set — Article tags | ✅ | SADD/SINTER |
+| | ZSet — Hot ranking | ✅ | ZINCRBY/ZREVRANGE |
+| **03** | 🚀 Advanced Features | ✅ | 4 Advanced Topics |
+| | Expiry Policy & Memory Eviction | ✅ | TTL / Lazy Delete / Active Expire / LRU/LFU |
+| | Pub/Sub — Publish & Subscribe | ✅ | SUBSCRIBE / PUBLISH / Pattern Subscribe |
+| | Pipeline — Batch Operations | ✅ | 65× faster than normal mode |
+| | Lua Script — Atomic Operations | ✅ | redis.call / EVAL / register_script |
 
-**📄 Documentation:** [Redis/DAY1/](Redis/DAY1/)
+**📄 Documentation:** [Redis/DAY1/](Redis/DAY1/) · [DAY2 README](Redis/DAY2/README.md) · [DAY3 README](Redis/DAY3/README.md)
 
 </details>
 
