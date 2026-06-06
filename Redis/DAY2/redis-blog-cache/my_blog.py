@@ -16,6 +16,11 @@ fake_db = {
         "likes":0
     }
 }
+def retry_and_sleep(function,retry:int):
+    if retry <= 0:
+        return {"data":None,"source":"Timeout"}
+    time.sleep(1)
+    return function(retry-1)
 
 # === First:Article content caching ===
 # === Learn String cache ===
@@ -48,11 +53,7 @@ def get_article_content(article_id:int,retry:int=3):
         finally:
             redis.delete(lock_key)
     else:
-        if retry <= 0:
-            return {"data":None, "source":"Timeout"}
-        time.sleep(1)
-        return get_article_content(article_id, retry - 1)
-
+        retry_and_sleep(get_article_content,retry)
 # === Function: Check the number of articles liked ===
 @app.get("/articles/{article_id}/likes")
 def get_article_likes(article_id:str):
@@ -145,10 +146,7 @@ def get_user_profile(username:str,retry:int=3):
             finally:
                 redis.delete(lock_key)
         else:
-            if retry<=0:
-                return {"data":None,"source":"Timeout"}
-            time.sleep(1)
-            return get_user_profile(username,retry-1)
+            retry_and_sleep(get_user_profile,retry)
 # === Second end ===
 
 # === Third:Post issues and check the lastest issue
@@ -210,10 +208,7 @@ def get_latest_articles(retry:int=3):
                 redis.delete(lock_key)
 
         else:
-            if retry<=0:
-                return {"article_id":None,"source":"Timeout"}
-            time.sleep(1)
-            return get_latest_articles(retry-1)
+            retry_and_sleep(get_latest_articles,retry)
 
 # === Third end ===
 
@@ -278,10 +273,7 @@ def get_article_tags(article_id:str,retry:int=3):
                 redis.delete(lock_key)
 
         else:
-            if retry<=0:
-                return {"tags":None,"source":"Timeout"}
-            time.sleep(1)
-            return get_article_tags(article_id,retry-1)
+            retry_and_sleep(get_article_tags,retry)
 
 
 # === Function:get what tags are related to the article ===
@@ -310,7 +302,7 @@ def get_articles_by_tags(tags:str = None):
 
 # === Fifth:Hot list ranking
 # === Learn Zset cache ===
-# === Check -6870
+# === Check 68-70
 
 # === Function:Go to the hot list ===
 @app.get("/articles/hot")
@@ -342,10 +334,7 @@ def get_hot_articles(retry:int=3):
                 redis.delete(lock_key)
 
         else:
-            if retry <= 0:
-                return {"articles":None, "source":"Timeout"}
-            time.sleep(1)
-            return get_hot_articles(retry - 1)
+            retry_and_sleep(get_hot_articles,retry)
 
                 
 
