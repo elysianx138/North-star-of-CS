@@ -11,6 +11,7 @@ pool = ConnectionPool(
 def get_redis():
     return Redis(connection_pool=pool)
 
+# Compare the time of pipeline and none pipeline
 def have_pipeline():
     redis = get_redis()
     redis.flushdb()
