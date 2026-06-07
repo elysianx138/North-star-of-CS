@@ -595,4 +595,4 @@ DAY4 Core Topics / DAY4 核心知识点：
 
 上一章 / Previous: [DAY3 — Expiry, Pub/Sub, Pipeline, Lua Scripting](../DAY3/README.md)
 
-下一章 / Next: DAY5 — Database Integration (wait until you learn MySQL/PostgreSQL)
+下一章 / Next: MySQL — Database Integration (wait until you learn MySQL/PostgreSQL)
