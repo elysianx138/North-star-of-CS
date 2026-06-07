@@ -43,7 +43,7 @@
 | Topic | Status | Progress | Link |
 |:----:|:----:|:----:|:----:|
 | 🐳 **Docker** | ✅ Complete | `████████████████████` 100% | [→ Go](Docker/) |
-| 🗄️ **Redis** | ✅ Complete (DAY1-3) | `████████████████████` 100% | [→ Go](Redis/) |
+| 🗄️ **Redis** | ✅ Complete (DAY1-4) | `████████████████████` 100% | [→ Go](Redis/) |
 | ⚡ **FastAPI** | 🚧 In Progress | `██████████░░░░░░░░` 40% | [→ Go](Redis/DAY1/) |
 | 🐍 **Python** | 📋 Planned | `██░░░░░░░░░░░░░░░░` 10% | Coming Soon |
 | 🤖 **AI / LLM** | 📋 Planned | `░░░░░░░░░░░░░░░░░░` 0% | Coming Soon |
@@ -102,8 +102,13 @@
 | | Pub/Sub — Publish & Subscribe | ✅ | SUBSCRIBE / PUBLISH / Pattern Subscribe |
 | | Pipeline — Batch Operations | ✅ | 65× faster than normal mode |
 | | Lua Script — Atomic Operations | ✅ | redis.call / EVAL / register_script |
+| **04** | 🛡️ 高可用与持久化 / HA & Persistence | ✅ | 4 Production Topics |
+| | RDB Persistence | ✅ | BGSAVE / dump.rdb / fork |
+| | AOF Persistence | ✅ | appendfsync / BGREWRITEAOF |
+| | Master-Slave Replication | ✅ | REPLICAOF / read-only |
+| | Sentinel Failover | ✅ | Auto master election |
 
-**📄 Documentation:** [Redis/DAY1/](Redis/DAY1/) · [DAY2 README](Redis/DAY2/README.md) · [DAY3 README](Redis/DAY3/README.md)
+**📄 Documentation:** [Redis/DAY1/](Redis/DAY1/) · [DAY2 README](Redis/DAY2/README.md) · [DAY3 README](Redis/DAY3/README.md) · [DAY4 README](Redis/DAY4/README.md)
 
 </details>
 
