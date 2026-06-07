@@ -17,6 +17,7 @@
 ![LangChain](https://img.shields.io/badge/LangChain-%F0%9F%94%97-1C3C3C?style=for-the-badge)
 ![AI](https://img.shields.io/badge/AI-LLM%20%26%20RAG-8A2BE2?style=for-the-badge&logo=openai&logoColor=white)
 ![SQLite](https://img.shields.io/badge/SQLite-003B57?style=for-the-badge&logo=sqlite&logoColor=white)
+![MySQL](https://img.shields.io/badge/MySQL-8.0-4479A1?style=for-the-badge&logo=mysql&logoColor=white)
 ![GitHub last commit](https://img.shields.io/github/last-commit/elysianx138/North-star-of-CS?style=for-the-badge&logo=githubactions&color=orange)
 
 <br>
@@ -47,10 +48,10 @@
 | ⚡ **FastAPI** | 🚧 In Progress | `██████████░░░░░░░░` 40% | [→ Go](Redis/DAY1/) |
 | 🐍 **Python** | 📋 Planned | `██░░░░░░░░░░░░░░░░` 10% | Coming Soon |
 | 🤖 **AI / LLM** | 📋 Planned | `░░░░░░░░░░░░░░░░░░` 0% | Coming Soon |
-| 🗄️ **MySQL** | 📋 Planned | `░░░░░░░░░░░░░░░░░░` 0% | Coming Soon |
+| 🗄️ **MySQL** | 🚧 In Progress | `███░░░░░░░░░░░░░░░░░` 15% | [→ Go](MySQL/DAY1/) |
 | 🌐 **Web Frontend** | 📋 Planned | `░░░░░░░░░░░░░░░░░░` 0% | Coming Soon |
 
-**Total Progress:** `████████░░░░░░░░░░░░` **30%** · 7/∞ topics
+**Total Progress:** `██████████░░░░░░░░░░` **38%** · 7/∞ topics
 
 </div>
 
@@ -114,6 +115,29 @@
 
 ---
 
+## 🗄️ MySQL
+
+<details>
+<summary><b>📖 Click to expand — SQL basics to Python + MySQL integration</b></summary>
+
+<br>
+
+| Day | Content | Status | Tech Stack |
+|:---:|---------|:------:|:----------:|
+| **01** | 🚀 SQL Basics Express — DAY1-4 速通 | ✅ | Docker MySQL 8.0 |
+| | CRUD / JOIN / Index / Transaction / ACID | ✅ | CLI + SQL |
+| **02** | 🐍 Python + MySQL — PyMySQL 驱动 | ⏳ 待做 | Python + PyMySQL |
+| **03** | ⚡ FastAPI + MySQL — 替换 fake_db | ⏳ 待做 | FastAPI + MySQL |
+| **04** | 🐳 Docker Compose — 全栈部署 | ⏳ 待做 | Docker Compose |
+
+**📄 Documentation:** [MySQL/DAY1/README.md](MySQL/DAY1/README.md)
+
+> DAY1 覆盖 MySQL 核心基础：建库建表、CRUD、JOIN、索引、事务、ACID。
+
+</details>
+
+---
+
 ## 🤖 AI / LLM & RAG
 
 <details>
@@ -169,7 +193,7 @@
 - [x] ⚡ FastAPI — Async web framework
 - [x] 🤖 LangChain RAG — AI knowledge base assistant
 - [ ] 🐍 Python Deep Dive — Advanced features
-- [ ] 🗄️ MySQL — Relational databases
+- [ ] 🗄️ MySQL — Relational databases (DAY1 ✅)
 - [ ] 🌐 Web Frontend — HTML/CSS/JS/Vue
 - [ ] ☁️ Cloud Deployment — AWS/Azure/aliyun
 
