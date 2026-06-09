@@ -48,10 +48,10 @@
 | ⚡ **FastAPI** | 🚧 In Progress | `██████████░░░░░░░░` 40% | [→ Go](Redis/DAY1/) |
 | 🐍 **Python** | 📋 Planned | `██░░░░░░░░░░░░░░░░` 10% | Coming Soon |
 | 🤖 **AI / LLM** | 📋 Planned | `░░░░░░░░░░░░░░░░░░` 0% | Coming Soon |
-| 🗄️ **MySQL** | 🚧 In Progress | `███████░░░░░░░░░░░░░` 30% | [→ Go](MySQL/DAY1/) |
+| 🗄️ **MySQL** | 🚧 In Progress | `█████████░░░░░░░░░░░░` 45% | [→ Go](MySQL/DAY1/) |
 | 🌐 **Web Frontend** | 📋 Planned | `░░░░░░░░░░░░░░░░░░` 0% | Coming Soon |
 
-**Total Progress:** `██████████░░░░░░░░░░` **38%** · 7/∞ topics
+**Total Progress:** `███████████░░░░░░░░░` **42%** · 7/∞ topics
 
 </div>
 
@@ -130,7 +130,7 @@
 | **03** | ⚡ FastAPI + MySQL — 替换 fake_db | ⏳ 待做 | FastAPI + MySQL |
 | **04** | 🐳 Docker Compose — 全栈部署 | ⏳ 待做 | Docker Compose |
 
-**📄 Documentation:** [MySQL/DAY1/README.md](MySQL/DAY1/README.md)
+**📄 Documentation:** [MySQL/DAY1/README.md](MySQL/DAY1/README.md) · [DAY2 README](MySQL/DAY2/README.md)
 
 > DAY1-DAY2 覆盖 MySQL 核心基础与 Python 整合：建库建表、CRUD、JOIN、索引、事务、ACID、连接池、DB 工具类。
 

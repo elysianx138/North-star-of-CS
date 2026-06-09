@@ -20,7 +20,8 @@
 5. [DB 工具类 / DB Utility Class](#-五db-工具类--db-utility-class)
 6. [CRUD 方法 / CRUD Methods](#-六crud-方法--crud-methods)
 7. [异常处理 / Exception Handling](#-七异常处理--exception-handling)
-8. [测试 / Testing](#-八测试--testing)
+8. [事务操作 / Transaction](#-八事务操作--transaction)
+9. [测试 / Testing](#-九测试--testing)
 
 ---
 
@@ -202,6 +203,20 @@ class DB:
         finally:
             conn.close()
 
+    @contextmanager
+    def transaction(self):
+        """多个操作共用一个事务 / Multiple ops, one transaction"""
+        conn = self.pool.connection()
+        try:
+            with conn.cursor() as cursor:
+                yield cursor
+            conn.commit()
+        except Exception:
+            conn.rollback()
+            raise
+        finally:
+            conn.close()
+
 # 全局单例 / Global singleton — 其他文件直接 import
 db = DB()
 ```
@@ -244,6 +259,28 @@ def delete(self, sql, params=None):
     with self.conn_cursor() as cursor:
         cursor.execute(sql, params or ())
         return cursor.rowcount    # 返回影响行数 / Rows affected
+
+# 批量插入 / Batch insert
+def insert_many(self, sql, params_list):
+    with self.conn_cursor() as cursor:
+        cursor.executemany(sql, params_list)
+        return cursor.rowcount    # 返回插入行数 / Rows inserted
+```
+
+### insert_many 批量插入 / Batch Insert
+
+**EN:** `insert_many` uses `executemany()` to insert multiple rows in one call — much faster than looping `insert`.
+
+**CN:** 用 `executemany()` 一次插多条，比 `for` 循环逐个 `insert` 快 10 倍以上。
+
+```python
+sql = "INSERT INTO articles (title, content, author_id) VALUES (%s, %s, %s)"
+data = [
+    ("Title1", "Content1", 1),
+    ("Title2", "Content2", 2),
+    ("Title3", "Content3", 1),
+]
+db.insert_many(sql, data)
 ```
 
 ### 返回值说明 / Return Values
@@ -253,6 +290,7 @@ def delete(self, sql, params=None):
 | `fetch_one` | 一行 `(tuple)` 或 `None` | 查单条 / Single row query |
 | `fetch_all` | 多行 `(tuple of tuples)` | 查全部 / All rows |
 | `insert` | 自增 id `(int)` | 获取新数据 id / Get new row id |
+| `insert_many` | 插入行数 `(int)` | 确认批量插入了多少条 / Confirm batch count |
 | `update` | 影响行数 `(int)` | 判断是否更新成功 / Check if update succeeded |
 | `delete` | 影响行数 `(int)` | 判断是否删除成功 / Check if delete succeeded |
 
@@ -285,7 +323,32 @@ def conn_cursor(self):
 
 ---
 
-## 🧪 八、测试 / Testing
+## 🔄 八、事务操作 / Transaction
+
+**EN:** `conn_cursor` auto-commits after each call. When you need multiple operations to succeed or fail together, use `transaction`.
+
+**CN:** `conn_cursor` 每次调用自动提交。当需要多个操作**一起成功或一起失败**时，用 `transaction`。
+
+```python
+# 转账 — 两个 UPDATE 必须在同一个事务里 / Transfer — both updates in one transaction
+with db.transaction() as cursor:
+    cursor.execute("UPDATE accounts SET balance = balance - 100 WHERE id = %s", (1,))
+    cursor.execute("UPDATE accounts SET balance = balance + 100 WHERE id = %s", (2,))
+# 退出 with → 一起 commit，或一起 rollback
+```
+
+### conn_cursor vs transaction
+
+| | `conn_cursor` | `transaction` |
+|:---|:---|:---|
+| 谁用 | CRUD 方法内部 / Inside CRUD methods | 你手动用 / Manual use |
+| 几个操作 | 1 个 / Single | 多个 / Multiple |
+| 提交时机 | 每次自动提交 / Auto commit each | 退出 with 时统一提交 / Commit on exit |
+| 场景 | 单次查询 / Single query | 转账、下单等 / Transfer, order |
+
+---
+
+## 🧪 九、测试 / Testing
 
 **EN:** Run a full CRUD test.
 

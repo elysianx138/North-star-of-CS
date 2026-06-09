@@ -32,6 +32,19 @@ class DB:
         finally:
             conn.close()
 
+    @contextmanager
+    def transaction(self):
+        conn = self.pool.connection()
+        try:
+            with conn.cursor() as cursor:
+                yield cursor
+            conn.commit()
+        except Exception:
+            conn.rollback()
+            raise
+        finally:
+            conn.close()
+
     def fetch_one(self, sql, params=None):
         with self.conn_cursor() as cursor:
             cursor.execute(sql, params or ())
@@ -55,6 +68,11 @@ class DB:
     def delete(self, sql, params=None):
         with self.conn_cursor() as cursor:
             cursor.execute(sql, params or ())
+            return cursor.rowcount
+        
+    def insert_many(self,sql,params_list):
+        with self.conn_cursor() as cursor:
+            cursor.executemany(sql,params_list)
             return cursor.rowcount
 
 # Create DB instance
