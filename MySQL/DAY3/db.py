@@ -27,7 +27,7 @@ class DB:
     def conn_cursor(self):
         conn = self.pool.connection()
         try:
-            with conn.cursor() as cursor:
+            with conn.cursor(pymysql.cursors.DictCursor) as cursor:
                 yield cursor
             conn.commit()
         except Exception:
