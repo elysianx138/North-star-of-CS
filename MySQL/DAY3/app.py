@@ -2,6 +2,8 @@ from fastapi import FastAPI
 from contextlib import asynccontextmanager
 from config import CONFIG as config
 from datetime import datetime
+from api.users import router as users_router
+from api.articles import router as articles_router
 import logging
 
 logger = logging.getLogger("uvicorn")
@@ -16,6 +18,8 @@ async def lifespan(app: FastAPI):
     logger.info("✔Shut down successfully!")
 
 app = FastAPI(lifespan=lifespan)
+app.include_router(users_router)
+app.include_router(articles_router)
 
 @app.get("/")
 def root():

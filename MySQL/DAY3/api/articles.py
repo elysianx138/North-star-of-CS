@@ -2,7 +2,6 @@ from database import get_redis
 from fastapi import APIRouter,HTTPException
 from db import db
 from pydantic import BaseModel
-from utils.retry_and_sleep import retry_and_sleep
 import random
 
 router = APIRouter()
@@ -39,10 +38,11 @@ def get_articles(article_id:int,retry:int=3):
         return {"title":data.get("title"), "content":data.get("content")}
     
     # If cache is not hit, fetch from database
+    
     else:
-        try:
-            locked = redis.set(lock_key,"1",nx=True,ex=10)
-            if locked:
+        locked = redis.set(lock_key,"1",nx=True,ex=10)
+        if locked:
+            try:
                 article = db.fetch_one("SELECT title,content FROM articles WHERE id = %s", (article_id,))
                 if article:
                     redis.hset(cache_key,mapping={
@@ -57,9 +57,11 @@ def get_articles(article_id:int,retry:int=3):
                     })
                     redis.expire(cache_key,120+random.randint(0,60))
                     raise HTTPException(status_code=404,detail="Article not found")
-            else:
-                raise HTTPException(status_code=429,detail="Too many requests")
+            finally:
+                redis.delete(lock_key)
 
-        finally:
-            redis.delete(lock_key)
+        else:
+            raise HTTPException(status_code=429,detail="Too many requests")
+
+       
 

@@ -40,8 +40,13 @@ def login(user:User):
     redis = get_redis()
     
     usr = redis.hgetall(f"user:{user.username}")
+    if usr and usr.get("password"):
+        if usr.get("password") != user.userpassword:
+            raise HTTPException(status_code=404,detail="Password not correct")
+        return {"username":usr.get("username"),"password":usr.get("password")}
     if usr.get("__NULL__"):
         raise HTTPException(status_code=404,detail="User not found")
+    
     if not usr:
         row = db.fetch_one("SELECT username,userpassword FROM users WHERE username = %s AND userpassword = %s",(user.username,user.userpassword))
         if not row:
@@ -54,4 +59,4 @@ def login(user:User):
         })
         redis.expire(f"user:{user.username}",300+random.randint(0,120))
         usr = redis.hgetall(f"user:{user.username}")
-    return {"username":usr.get("username"),"password":usr.get("password")}
+        return {"username":usr.get("username"),"password":usr.get("password")}
