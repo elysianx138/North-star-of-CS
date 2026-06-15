@@ -5,3 +5,4 @@ DBUtils
 redis
 python-dotenv
 
+bcrypt

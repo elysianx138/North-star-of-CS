@@ -49,10 +49,11 @@
 | 🐍 **Python** | 📋 Planned | `██░░░░░░░░░░░░░░░░` 10% | Coming Soon |
 | 🤖 **AI / LLM** | 📋 Planned | `░░░░░░░░░░░░░░░░░░` 0% | Coming Soon |
 | 🗄️ **MySQL** | ✅ Complete | `████████████████░░░░` 85% | [→ Go](MySQL/DAY1/) |
+| 🛡️ **Security** | 🚧 In Progress | `███░░░░░░░░░░░░░░░` 20% | [→ Go](Security/DAY1/) |
 | 🌐 **Web Frontend** | 📋 Planned | `░░░░░░░░░░░░░░░░░░` 0% | Coming Soon |
-| ⚡ **C++** | 📋 Planned | `░░░░░░░░░░░░░░░░░░` 0% | Coming Soon |
+| ⚡ **C++** | 🚧 In Progress | `██░░░░░░░░░░░░░░░░` 10% | [→ Go](C++/README.md) |
 
-**Total Progress:** `████████████░░░░░░░░` **48%** · 8/∞ topics
+**Total Progress:** `████████░░░░░░░░░░░░` **40%** · 9/∞ topics
 
 </div>
 
@@ -143,6 +144,28 @@
 
 ---
 
+## 🛡️ Security
+
+<details>
+<summary><b>📖 Click to expand — Web security basics & defensive coding</b></summary>
+
+<br>
+
+| Day | Content | Status | Tech Stack |
+|:---:|---------|:------:|:----------:|
+| **01** | 🧪 Web Security Basics | ✅ Complete | Python + MySQL + bcrypt |
+| | SQL Injection — Attack & Defense | ✅ | Parameterized queries (`%s`) |
+| | Password Security — bcrypt vs SHA-256 | ✅ | bcrypt hashpw/checkpw |
+| | Logging Standards — English 句式 | ✅ | 4 key logging locations |
+
+**📄 Documentation:** [Security/DAY1/README.md](Security/DAY1/README.md)
+
+> DAY1 covers SQL injection prevention, bcrypt password hashing, and proper logging patterns in a production blog API.
+
+</details>
+
+---
+
 ## 🤖 AI / LLM & RAG
 
 <details>
@@ -199,6 +222,7 @@
 - [x] 🤖 LangChain RAG — AI knowledge base assistant
 - [ ] 🐍 Python Deep Dive — Advanced features
 - [ ] 🗄️ MySQL — Relational databases (DAY1-3 ✅)
+- [ ] 🛡️ Security — Web security basics (DAY1 ✅)
 - [ ] 🌐 Web Frontend — HTML/CSS/JS/Vue
 - [ ] ☁️ Cloud Deployment — AWS/Azure/aliyun
 
