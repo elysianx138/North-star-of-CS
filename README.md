@@ -48,10 +48,10 @@
 | ⚡ **FastAPI** | 🚧 In Progress | `██████████░░░░░░░░` 40% | [→ Go](Redis/DAY1/) |
 | 🐍 **Python** | 📋 Planned | `██░░░░░░░░░░░░░░░░` 10% | Coming Soon |
 | 🤖 **AI / LLM** | 📋 Planned | `░░░░░░░░░░░░░░░░░░` 0% | Coming Soon |
-| 🗄️ **MySQL** | 🚧 In Progress | `█████████░░░░░░░░░░░░` 45% | [→ Go](MySQL/DAY1/) |
+| 🗄️ **MySQL** | 🚧 In Progress | `████████████░░░░░░░░░░` 58% | [→ Go](MySQL/DAY1/) |
 | 🌐 **Web Frontend** | 📋 Planned | `░░░░░░░░░░░░░░░░░░` 0% | Coming Soon |
 
-**Total Progress:** `███████████░░░░░░░░░` **42%** · 7/∞ topics
+**Total Progress:** `████████████░░░░░░░░░░` **44%** · 7/∞ topics
 
 </div>
 
@@ -127,12 +127,16 @@
 | **01** | 🚀 SQL Basics Express — DAY1-4 速通 | ✅ | Docker MySQL 8.0 |
 | | CRUD / JOIN / Index / Transaction / ACID | ✅ | CLI + SQL |
 | **02** | 🐍 Python + MySQL — PyMySQL 驱动 | ✅ | Python + PyMySQL |
-| **03** | ⚡ FastAPI + MySQL — 替换 fake_db | ⏳ 待做 | FastAPI + MySQL |
+| **03** | ⚡ FastAPI + MySQL + Redis — 博客 API | ✅ 完成 | FastAPI + MySQL + Redis |
+| | 用户注册/登录 + SHA-256 加密 | ✅ | Redis Hash + Null Cache |
+| | 文章 CRUD + 标签系统 | ✅ | Redis Hash + Set + 互斥锁 |
+| | 点赞 + 热度排行榜 | ✅ | Lua 脚本 + ZSet |
+| | 缓存穿透/击穿/雪崩 全防护 | ✅ | Null Cache + Mutex + TTL 随机化 |
 | **04** | 🐳 Docker Compose — 全栈部署 | ⏳ 待做 | Docker Compose |
 
-**📄 Documentation:** [MySQL/DAY1/README.md](MySQL/DAY1/README.md) · [DAY2 README](MySQL/DAY2/README.md)
+**📄 Documentation:** [MySQL/DAY1/README.md](MySQL/DAY1/README.md) · [DAY2 README](MySQL/DAY2/README.md) · [DAY3 README](MySQL/DAY3/README.md)
 
-> DAY1-DAY2 覆盖 MySQL 核心基础与 Python 整合：建库建表、CRUD、JOIN、索引、事务、ACID、连接池、DB 工具类。
+> DAY1-DAY3 覆盖 MySQL + Redis + FastAPI 全链路：SQL 基础、Python 整合、连接池、Redis 缓存（Hash/Set/ZSet）、Lua 脚本原子操作、互斥锁防击穿、空值缓存防穿透、TTL 随机化防雪崩、标签系统。
 
 </details>
 
@@ -193,7 +197,7 @@
 - [x] ⚡ FastAPI — Async web framework
 - [x] 🤖 LangChain RAG — AI knowledge base assistant
 - [ ] 🐍 Python Deep Dive — Advanced features
-- [ ] 🗄️ MySQL — Relational databases (DAY1 ✅)
+- [ ] 🗄️ MySQL — Relational databases (DAY1-3 ✅)
 - [ ] 🌐 Web Frontend — HTML/CSS/JS/Vue
 - [ ] ☁️ Cloud Deployment — AWS/Azure/aliyun
 
