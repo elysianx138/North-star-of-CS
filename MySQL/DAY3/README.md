@@ -21,7 +21,8 @@
 6. [点赞和热度 / Likes & Hot Ranking](#-六点赞和热度--likes--hot-ranking)
 7. [标签系统 / Tags API](#-七标签系统--tags-api)
 8. [缓存策略总结 / Caching Strategy](#-八缓存策略总结--caching-strategy)
-9. [测试 / Testing](#-九测试--testing)
+9. [Docker 部署 / Docker Deployment](#-十docker-部署--docker-deployment)
+10. [测试 / Testing](#-十一测试--testing)
 
 ---
 
@@ -443,7 +444,131 @@ db.update("UPDATE articles SET likes = likes+1 WHERE id = %s", (article_id,))
 
 ---
 
-## 🧪 九、测试 / Testing
+---
+## 🐳 十、Docker 部署 / Docker Deployment
+
+**EN:** Deploy the entire blog API (FastAPI + MySQL + Redis) with one command using Docker Compose. Multi-stage build with non-root user for security.
+
+**CN:** 用 Docker Compose 一条命令部署整个博客 API（FastAPI + MySQL + Redis）。多阶段构建 + 非 root 用户，生产安全规范。
+
+### 项目结构 / Project Structure
+
+```
+MySQL/DAY3/
+├── Dockerfile          # 多阶段构建 / Multi-stage build
+├── docker-compose.yml  # 三服务编排 / 3-service orchestration
+├── .dockerignore       # 排除无需的文件 / Exclude unnecessary files
+└── ...
+```
+
+### Dockerfile
+
+```dockerfile
+# === Builder ===
+FROM python:3.10-slim AS builder
+WORKDIR /app
+COPY requirements.txt .
+RUN pip install --no-cache-dir --user -r requirements.txt
+
+# === Runtime ===
+FROM python:3.10-slim
+WORKDIR /app
+
+COPY --from=builder /root/.local /app/.local
+ENV PATH=/app/.local/bin:$PATH
+ENV PYTHONPATH=/app/.local/lib/python3.10/site-packages:$PYTHONPATH
+
+RUN groupadd -r appuser && useradd --no-log-init -r -g appuser appuser
+COPY --chown=appuser:appuser . .
+USER appuser
+
+CMD ["uvicorn", "app:app", "--host", "0.0.0.0", "--port", "8000"]
+```
+
+| 阶段 / Stage | 作用 / Purpose |
+|:---|:---|
+| **Builder** | 安装 Python 依赖 / Install pip packages |
+| **Runtime** | 只复制依赖和代码，大幅减小镜像 / Copy only deps + code, much smaller image |
+| **appuser** | 非 root 运行，安全规范 / Non-root user, production best practice |
+
+### docker-compose.yml
+
+```yaml
+services:
+  mysql:
+    image: mysql:8.0
+    environment:
+      MYSQL_ROOT_PASSWORD: root123
+      MYSQL_DATABASE: blog
+    volumes:
+      - mysql_data:/var/lib/mysql     # 数据持久化 / Persistent data
+      - ./init.sql:/docker-entrypoint-initdb.d/init.sql  # 首次自动建表 / Auto-init tables
+    ports:
+      - 3306:3306
+
+  redis:
+    image: redis:7-alpine
+    ports:
+      - 6379:6379
+
+  web:
+    build: .
+    ports:
+      - 8000:8000
+    environment:
+      MYSQL_HOST: mysql     # 服务名作为主机名 / Service name as hostname
+      REDIS_HOST: redis
+    depends_on:
+      - mysql
+      - redis
+
+volumes:
+  mysql_data:
+```
+
+**EN:** Docker Compose creates an internal network — services can reach each other by their service name (`mysql`, `redis`). `init.sql` is automatically executed on first MySQL startup.
+
+**CN:** Docker Compose 会创建一个内部网络，服务之间用服务名（`mysql`、`redis`）互相访问。`init.sql` 在 MySQL 首次启动时自动执行建表。
+
+### 启动命令 / Start Commands
+
+```bash
+# 构建并启动所有服务 / Build & start all services
+docker-compose up -d
+
+# 只重建 web 服务（修改代码后） / Rebuild only web (after code changes)
+docker-compose up -d --build web
+
+# 查看日志 / View logs
+docker-compose logs -f web
+
+# 停止并删除容器 / Stop & remove containers
+docker-compose down
+
+# 停止并删除容器+数据卷 / Stop & remove everything (including DB data)
+docker-compose down -v
+```
+
+### 网络通信 / Network Communication
+
+```
+┌───────── Compose Internal Network ─────────┐
+│                                             │
+│   mysql:3306 ◄────── web ──────► redis:6379 │
+│        ▲                                    │
+│        │ 第一次启动自动执行                    │
+│   init.sql                                  │
+│                                             │
+└─────────────────────────────────────────────┘
+```
+
+**EN:** The `environment` section tells the Python code to use `mysql` and `redis` as hostnames (instead of `localhost`). `db.py` and `config.py` read these via `os.getenv()`.
+
+**CN:** `environment` 中的 `MYSQL_HOST: mysql` 告诉 Python 代码连接 `mysql` 这个主机名（而非 `localhost`）。`db.py` 和 `config.py` 通过 `os.getenv()` 读取。
+
+---
+
+## 🧪 十一、测试 / Testing
 
 **EN:** Test all endpoints end-to-end. Start the server and use curl or Swagger UI.
 
@@ -509,5 +634,9 @@ curl "http://127.0.0.1:8000/articles?tag=redis"
 | 空值缓存防穿透 / Null Cache for Penetration | ✅ 理解 / Understand |
 | TTL 随机化防雪崩 / TTL Randomization for Avalanche | ✅ 理解 / Understand |
 | 标签多对多关系 / Many-to-Many Tags | ✅ 理解 / Understand |
+| Docker 多阶段构建 / Multi-stage Build | ✅ 理解 / Understand |
+| Docker Compose 三服务编排 / 3-Service Orchestration | ✅ 理解 / Understand |
+| 非 root 安全规范 / Non-root User Security | ✅ 理解 / Understand |
+| 环境变量与容器通信 / Env Vars & Container Networking | ✅ 理解 / Understand |
 
-> **下一步 / Next Up:** DAY4 — 进阶优化，连接池调优，读写分离，慢查询
+> **下一步 / Next Up:** 进阶实战 — 事务实操、索引优化、缓存策略手动模拟

@@ -48,10 +48,10 @@
 | ⚡ **FastAPI** | 🚧 In Progress | `██████████░░░░░░░░` 40% | [→ Go](Redis/DAY1/) |
 | 🐍 **Python** | 📋 Planned | `██░░░░░░░░░░░░░░░░` 10% | Coming Soon |
 | 🤖 **AI / LLM** | 📋 Planned | `░░░░░░░░░░░░░░░░░░` 0% | Coming Soon |
-| 🗄️ **MySQL** | 🚧 In Progress | `████████████░░░░░░░░░░` 58% | [→ Go](MySQL/DAY1/) |
+| 🗄️ **MySQL** | 🚧 In Progress | `████████████████░░░░░░` 78% | [→ Go](MySQL/DAY1/) |
 | 🌐 **Web Frontend** | 📋 Planned | `░░░░░░░░░░░░░░░░░░` 0% | Coming Soon |
 
-**Total Progress:** `████████████░░░░░░░░░░` **44%** · 7/∞ topics
+**Total Progress:** `█████████████░░░░░░░░` **46%** · 7/∞ topics
 
 </div>
 
@@ -132,11 +132,11 @@
 | | 文章 CRUD + 标签系统 | ✅ | Redis Hash + Set + 互斥锁 |
 | | 点赞 + 热度排行榜 | ✅ | Lua 脚本 + ZSet |
 | | 缓存穿透/击穿/雪崩 全防护 | ✅ | Null Cache + Mutex + TTL 随机化 |
-| **04** | 🐳 Docker Compose — 全栈部署 | ⏳ 待做 | Docker Compose |
+| **04** | 🐳 Docker Compose — 全栈部署 | ✅ 完成 | Docker Compose |
 
 **📄 Documentation:** [MySQL/DAY1/README.md](MySQL/DAY1/README.md) · [DAY2 README](MySQL/DAY2/README.md) · [DAY3 README](MySQL/DAY3/README.md)
 
-> DAY1-DAY3 覆盖 MySQL + Redis + FastAPI 全链路：SQL 基础、Python 整合、连接池、Redis 缓存（Hash/Set/ZSet）、Lua 脚本原子操作、互斥锁防击穿、空值缓存防穿透、TTL 随机化防雪崩、标签系统。
+> DAY1-DAY4 覆盖 MySQL + Redis + FastAPI 全链路：SQL 基础、Python 整合、连接池、Redis 缓存（Hash/Set/ZSet）、Lua 脚本原子操作、互斥锁防击穿、空值缓存防穿透、TTL 随机化防雪崩、标签系统、Docker Compose 全栈部署。
 
 </details>
 
