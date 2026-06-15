@@ -18,6 +18,7 @@
 ![AI](https://img.shields.io/badge/AI-LLM%20%26%20RAG-8A2BE2?style=for-the-badge&logo=openai&logoColor=white)
 ![SQLite](https://img.shields.io/badge/SQLite-003B57?style=for-the-badge&logo=sqlite&logoColor=white)
 ![MySQL](https://img.shields.io/badge/MySQL-8.0-4479A1?style=for-the-badge&logo=mysql&logoColor=white)
+![C++](https://img.shields.io/badge/C%2B%2B-20-00599C?style=for-the-badge&logo=c%2B%2B&logoColor=white)
 ![GitHub last commit](https://img.shields.io/github/last-commit/elysianx138/North-star-of-CS?style=for-the-badge&logo=githubactions&color=orange)
 
 <br>
@@ -51,9 +52,9 @@
 | 🗄️ **MySQL** | ✅ Complete | `████████████████░░░░` 85% | [→ Go](MySQL/DAY1/) |
 | 🛡️ **Security** | 🚧 In Progress | `███░░░░░░░░░░░░░░░` 20% | [→ Go](Security/DAY1/) |
 | 🌐 **Web Frontend** | 📋 Planned | `░░░░░░░░░░░░░░░░░░` 0% | Coming Soon |
-| ⚡ **C++** | 🚧 In Progress | `██░░░░░░░░░░░░░░░░` 10% | [→ Go](C++/README.md) |
+| ⚡ **C++** | 🚧 In Progress (DAY1 ✅) | `███░░░░░░░░░░░░░░░` 15% | [→ Go](C++/README.md) |
 
-**Total Progress:** `████████░░░░░░░░░░░░` **40%** · 9/∞ topics
+**Total Progress:** `████████░░░░░░░░░░░░` **41%** · 9/∞ topics
 
 </div>
 
