@@ -1,6 +1,8 @@
+import os
+
 REDIS_CONFIG = {
-    "host":"localhost",
-    "port":"6379",
+    "host":os.getenv("REDIS_HOST","localhost"),
+    "port":os.getenv("REDIS_PORT","6379"),
     "db":0,
     "max_connections":10,
     "decode_responses":True
