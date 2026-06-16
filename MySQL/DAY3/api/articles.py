@@ -1,8 +1,9 @@
 from database import get_redis
-from fastapi import APIRouter,HTTPException
+from fastapi import APIRouter,HTTPException,Header
 from db import db
 from pydantic import BaseModel
-import random
+from utils.jwt import decode as jwt_decode
+import random,os
 
 router = APIRouter()
 
@@ -13,9 +14,13 @@ class Article(BaseModel):
 
 # Post new article!
 @router.post("/articles")
-def post_articles(article:Article):
+def post_articles(article:Article,authorization:str=Header(None)):
+    token = authorization.split(" ")[1]
+    payload = jwt_decode(token,os.getenv("JWT_SECRET","myblog_jwt_secret"))
+    if not payload:
+        raise HTTPException(status_code=401,detail="Invalid token")
     redis = get_redis()
-    article_id = db.insert("INSERT INTO articles (title,content,author_id) VALUES (%s,%s,%s)", (article.title,article.content,1))
+    article_id = db.insert("INSERT INTO articles (title,content,author_id) VALUES (%s,%s,%s)", (article.title,article.content,payload["user_id"]))
     if article.tags:
         db.insert_many("INSERT INTO article_tags (article_id,tag) VALUES (%s,%s)", [(article_id,tag) for tag in article.tags])
         redis.sadd(f"article:{article_id}:tags",*article.tags)

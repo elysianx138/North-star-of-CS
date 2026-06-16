@@ -25,6 +25,20 @@ app.include_router(articles_router)
 app.include_router(likes_router)
 app.include_router(tags_router)
 
+@app.middleware("http")
+async def add_security_headers(request,call_next):
+    response = await call_next(request)
+    # Add security headers
+    # Prevent MIME sniffing
+    response.headers["X-Content-Type-Options"] = "nosniff"
+    # Clickjacking protection
+    response.headers["X-Frame-Options"] = "DENY"
+    # XXS Protection
+    response.headers["X-XSS-Protection"] = "1; mode=block"
+    # HTTPS Strict Transport Security
+    response.headers["Strict-Transport-Security"] = "max-age=31536000"
+    return response
+
 @app.get("/")
 def root():
     return {"message":"Hello World!"}

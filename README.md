@@ -50,7 +50,7 @@
 | 🐍 **Python** | 📋 Planned | `██░░░░░░░░░░░░░░░░` 10% | Coming Soon |
 | 🤖 **AI / LLM** | 📋 Planned | `░░░░░░░░░░░░░░░░░░` 0% | Coming Soon |
 | 🗄️ **MySQL** | ✅ Complete | `████████████████░░░░` 85% | [→ Go](MySQL/DAY1/) |
-| 🛡️ **Security** | 🚧 In Progress | `███░░░░░░░░░░░░░░░` 20% | [→ Go](Security/DAY1/) |
+| 🛡️ **Security** | 🚧 In Progress | `██████░░░░░░░░░░░░` 40% | [→ Go](Security/DAY2/) |
 | 🌐 **Web Frontend** | 📋 Planned | `░░░░░░░░░░░░░░░░░░` 0% | Coming Soon |
 | ⚡ **C++** | 🚧 In Progress (DAY1 ✅) | `███░░░░░░░░░░░░░░░` 15% | [→ Go](C++/README.md) |
 
@@ -74,7 +74,7 @@
 | 03 | Docker Compose | ✅ |
 | 04 | Chinese mirrors & optimization | ✅ |
 
-**📄 Documentation:** [Docker/README.md](Docker/README.md) (Bilingual: 中文 & English)
+**📄 Documentation:** [Docker/README.md](Docker/README.md) (Bilingual: English & Chinese)
 
 > Beginner-friendly — from installation to production deployment.
 
@@ -106,7 +106,7 @@
 | | Pub/Sub — Publish & Subscribe | ✅ | SUBSCRIBE / PUBLISH / Pattern Subscribe |
 | | Pipeline — Batch Operations | ✅ | 65× faster than normal mode |
 | | Lua Script — Atomic Operations | ✅ | redis.call / EVAL / register_script |
-| **04** | 🛡️ 高可用与持久化 / HA & Persistence | ✅ | 4 Production Topics |
+| **04** | 🛡️ HA & Persistence — RDB/AOF/Replication/Sentinel | ✅ | 4 Production Topics |
 | | RDB Persistence | ✅ | BGSAVE / dump.rdb / fork |
 | | AOF Persistence | ✅ | appendfsync / BGREWRITEAOF |
 | | Master-Slave Replication | ✅ | REPLICAOF / read-only |
@@ -127,19 +127,19 @@
 
 | Day | Content | Status | Tech Stack |
 |:---:|---------|:------:|:----------:|
-| **01** | 🚀 SQL Basics Express — DAY1-4 速通 | ✅ | Docker MySQL 8.0 |
+| **01** | 🚀 SQL Basics Express — DAY1-4 Crash Course | ✅ | Docker MySQL 8.0 |
 | | CRUD / JOIN / Index / Transaction / ACID | ✅ | CLI + SQL |
-| **02** | 🐍 Python + MySQL — PyMySQL 驱动 | ✅ | Python + PyMySQL |
-| **03** | ⚡ FastAPI + MySQL + Redis — 博客 API | ✅ 完成 | FastAPI + MySQL + Redis |
-| | 用户注册/登录 + SHA-256 加密 | ✅ | Redis Hash + Null Cache |
-| | 文章 CRUD + 标签系统 | ✅ | Redis Hash + Set + 互斥锁 |
-| | 点赞 + 热度排行榜 | ✅ | Lua 脚本 + ZSet |
-| | 缓存穿透/击穿/雪崩 全防护 | ✅ | Null Cache + Mutex + TTL 随机化 |
-| **04** | 🛠️ 实战补强 — 事务/索引/缓存模拟 | ✅ 完成 | 容器内实操 |
+| **02** | 🐍 Python + MySQL — PyMySQL Driver | ✅ | Python + PyMySQL |
+| **03** | ⚡ FastAPI + MySQL + Redis — Blog API | ✅ Complete | FastAPI + MySQL + Redis |
+| | User Registration/Login + SHA-256 Hashing | ✅ | Redis Hash + Null Cache |
+| | Article CRUD + Tag System | ✅ | Redis Hash + Set + Mutex |
+| | Likes + Hot Ranking | ✅ | Lua Script + ZSet |
+| | Cache Penetration/Breakdown/Avalanche Prevention | ✅ | Null Cache + Mutex + TTL Randomization |
+| **04** | 🛠️ Practice — Transactions/Indexes/Cache Simulation | ✅ Complete | In-container Practice |
 
 **📄 Documentation:** [MySQL/DAY1/README.md](MySQL/DAY1/README.md) · [DAY2 README](MySQL/DAY2/README.md) · [DAY3 README](MySQL/DAY3/README.md) · [DAY4 README](MySQL/DAY4/README.md)
 
-> DAY1-DAY4 覆盖 MySQL + Redis + FastAPI 全链路：SQL 基础、Python 整合、连接池、Redis 缓存（Hash/Set/ZSet）、Lua 脚本原子操作、互斥锁防击穿、空值缓存防穿透、TTL 随机化防雪崩、标签系统、Docker Compose 全栈部署、事务回滚实操、EXPLAIN 索引对比。
+> DAY1-DAY4 covers MySQL + Redis + FastAPI full stack: SQL basics, Python integration, connection pool, Redis caching (Hash/Set/ZSet), Lua scripting for atomic operations, mutex lock for cache breakdown, null value caching for penetration, TTL randomization for avalanche, tag system, Docker Compose deployment, transaction rollback, and EXPLAIN index analysis.
 
 </details>
 
@@ -157,11 +157,15 @@
 | **01** | 🧪 Web Security Basics | ✅ Complete | Python + MySQL + bcrypt |
 | | SQL Injection — Attack & Defense | ✅ | Parameterized queries (`%s`) |
 | | Password Security — bcrypt vs SHA-256 | ✅ | bcrypt hashpw/checkpw |
-| | Logging Standards — English 句式 | ✅ | 4 key logging locations |
+| | Logging Standards — English  | ✅ | 4 key logging locations |
+| **02** | 🔐 JWT Authentication — Hand-written & Integration | ✅ Complete | FastAPI + HMAC-SHA256 |
+| | Part 1: Hand-written JWT (base64 + HMAC signature) | ✅ | Understanding JWT internals |
+| | Part 2: JWT in Blog Project (login + /me + auth middleware) | ✅ | FastAPI Header + Middleware |
+| | Part 3: CSRF Protection + Security Headers | ✅ | X-Frame-Options + HSTS |
 
-**📄 Documentation:** [Security/DAY1/README.md](Security/DAY1/README.md)
+**📄 Documentation:** [Security/DAY1/README.md](Security/DAY1/README.md) · [DAY2 README](Security/DAY2/README.md)
 
-> DAY1 covers SQL injection prevention, bcrypt password hashing, and proper logging patterns in a production blog API.
+> DAY1 covers SQL injection prevention, bcrypt password hashing, and proper logging patterns. DAY2 covers JWT authentication from hand-written implementation to production integration with CSRF protection and security headers.
 
 </details>
 

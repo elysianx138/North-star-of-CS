@@ -1,7 +1,7 @@
 import hashlib
 import hmac
 import base64
-import json
+import json,time
 
 def base64_bencode(data:bytes) -> str:
     # 二进制数据转ASCII
@@ -35,12 +35,16 @@ def decode(jwt:str,secret:str) -> dict:
     if signature != signature_b64:
         return None
     payload = json.loads(base64_bdecode(payload_b64))
+
+    exp = payload.get("exp")
+    if exp and exp<time.time():
+        return None
     return payload
 
 
 if __name__ == "__main__":
     # ① 签发
-    token = encode({"username": "admin"}, "my_secret")
+    token = encode({"username": "admin","exp": 160000}, "my_secret")
     print(f"JWT: {token}")
     print()
 
