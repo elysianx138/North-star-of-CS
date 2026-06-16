@@ -6,6 +6,7 @@ from api.users import router as users_router
 from api.articles import router as articles_router
 from api.likes import router as likes_router
 from api.tags import router as tags_router
+from api.auth import router as auth_router
 import logging
 
 logger = logging.getLogger("uvicorn")
@@ -24,6 +25,7 @@ app.include_router(users_router)
 app.include_router(articles_router)
 app.include_router(likes_router)
 app.include_router(tags_router)
+app.include_router(auth_router)
 
 @app.middleware("http")
 async def add_security_headers(request,call_next):

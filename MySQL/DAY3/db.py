@@ -15,7 +15,7 @@ class DB:
         self.pool = PooledDB(
             creator=pymysql,
             host=os.getenv("MYSQL_HOST","localhost"),
-            port=os.getenv("MYSQL_PORT",3306),
+            port=int(os.getenv("MYSQL_PORT",3306)),
             database=os.getenv("MYSQL_DATABASE","blog"),
             user=os.getenv("MYSQL_USER","root"),
             password=os.getenv("MYSQL_PASSWORD","root123"),

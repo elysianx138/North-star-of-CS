@@ -21,6 +21,7 @@ services:
     ports:
       - 8000:8000
     
+    env_file: .env
     environment:
       MYSQL_HOST: mysql
       REDIS_HOST: redis

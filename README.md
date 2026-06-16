@@ -50,7 +50,7 @@
 | 🐍 **Python** | 📋 Planned | `██░░░░░░░░░░░░░░░░` 10% | Coming Soon |
 | 🤖 **AI / LLM** | 📋 Planned | `░░░░░░░░░░░░░░░░░░` 0% | Coming Soon |
 | 🗄️ **MySQL** | ✅ Complete | `████████████████░░░░` 85% | [→ Go](MySQL/DAY1/) |
-| 🛡️ **Security** | 🚧 In Progress | `██████░░░░░░░░░░░░` 40% | [→ Go](Security/DAY2/) |
+| 🛡️ **Security** | 🚧 In Progress | `█████████░░░░░░░░░` 60% | [→ Go](Security/DAY3/) |
 | 🌐 **Web Frontend** | 📋 Planned | `░░░░░░░░░░░░░░░░░░` 0% | Coming Soon |
 | ⚡ **C++** | 🚧 In Progress (DAY1 ✅) | `███░░░░░░░░░░░░░░░` 15% | [→ Go](C++/README.md) |
 
