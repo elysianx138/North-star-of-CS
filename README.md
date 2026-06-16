@@ -52,9 +52,9 @@
 | 🗄️ **MySQL** | ✅ Complete | `████████████████░░░░` 85% | [→ Go](MySQL/DAY1/) |
 | 🛡️ **Security** | 🚧 In Progress | `█████████░░░░░░░░░` 60% | [→ Go](Security/DAY3/) |
 | 🌐 **Web Frontend** | 📋 Planned | `░░░░░░░░░░░░░░░░░░` 0% | Coming Soon |
-| ⚡ **C++** | 🚧 In Progress (DAY1 ✅) | `███░░░░░░░░░░░░░░░` 15% | [→ Go](C++/README.md) |
+| ⚡ **C++** | 🚧 In Progress (DAY1-2 ✅) | `████░░░░░░░░░░░░░░` 20% | [→ Go](C++/Week1/DAY1/) |
 
-**Total Progress:** `████████░░░░░░░░░░░░` **41%** · 9/∞ topics
+**Total Progress:** `████████░░░░░░░░░░░░` **42%** · 9/∞ topics
 
 </div>
 
