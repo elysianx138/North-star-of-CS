@@ -181,6 +181,15 @@ async def add_security_headers(request, call_next):
     return response
 ```
 
+### 四个头各防什么
+
+| 头 | 防什么 | 攻击例子 |
+|:---|:------|:--------|
+| **`X-Content-Type-Options: nosniff`** | 防 **MIME 嗅探** — 浏览器不会自作主张猜文件类型 | 你上传一张图但里面藏了 JS，浏览器不会当 JS 执行 |
+| **`X-Frame-Options: DENY`** | 防 **点击劫持** — 别人不能把你的页面嵌在 iframe 里 | 黑客做个假网站，透明叠一层你的银行页面，你点的"领奖"其实是"转账" |
+| **`X-XSS-Protection: 1; mode=block`** | 防 **反射型 XSS** — URL 里有可疑脚本时浏览器直接阻止 | 别人发你链接 `?q=<script>偷cookie</script>`，浏览器拦住不执行 |
+| **`Strict-Transport-Security`** | **强制 HTTPS** — 告诉浏览器以后只走 HTTPS，不走 HTTP | 你手动输入 `http://你的网站`，浏览器自动换成 `https://` |
+
 ---
 
 ## 总结
@@ -204,4 +213,4 @@ DAY2 — 认证安全：JWT
       └── 4 个响应头 → 防 4 种其他攻击
 ```
 
-> **明日预告：** DAY3 — ？？
+> **明日预告：** DAY3 — GitHub OAuth

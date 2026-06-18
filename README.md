@@ -50,7 +50,7 @@
 | 🐍 **Python** | 📋 Planned | `██░░░░░░░░░░░░░░░░` 10% | Coming Soon |
 | 🤖 **AI / LLM** | 📋 Planned | `░░░░░░░░░░░░░░░░░░` 0% | Coming Soon |
 | 🗄️ **MySQL** | ✅ Complete | `████████████████░░░░` 85% | [→ Go](MySQL/DAY1/) |
-| 🛡️ **Security** | 🚧 In Progress | `█████████░░░░░░░░░` 60% | [→ Go](Security/DAY3/) |
+| 🛡️ **Security** | 🚧 In Progress | `████████████░░░░░░` 80% | [→ Go](Security/DAY4/) |
 | 🌐 **Web Frontend** | 📋 Planned | `░░░░░░░░░░░░░░░░░░` 0% | Coming Soon |
 | ⚡ **C++** | 🚧 In Progress (DAY1-2 ✅) | `████░░░░░░░░░░░░░░` 20% | [→ Go](C++/Week1/DAY1/) |
 
@@ -162,10 +162,12 @@
 | | Part 1: Hand-written JWT (base64 + HMAC signature) | ✅ | Understanding JWT internals |
 | | Part 2: JWT in Blog Project (login + /me + auth middleware) | ✅ | FastAPI Header + Middleware |
 | | Part 3: CSRF Protection + Security Headers | ✅ | X-Frame-Options + HSTS |
+| **03** | 🌐 OAuth2.0 GitHub Login | ✅ Complete | FastAPI + httpx + GitHub OAuth |
+| **04** | 🔒 HTTPS/TLS + CORS | ✅ Complete | OpenSSL + CORSMiddleware |
 
-**📄 Documentation:** [Security/DAY1/README.md](Security/DAY1/README.md) · [DAY2 README](Security/DAY2/README.md)
+**📄 Documentation:** [Security/DAY1/README.md](Security/DAY1/README.md) · [DAY2 README](Security/DAY2/README.md) · [DAY4 README](Security/DAY4/README.md)
 
-> DAY1 covers SQL injection prevention, bcrypt password hashing, and proper logging patterns. DAY2 covers JWT authentication from hand-written implementation to production integration with CSRF protection and security headers.
+> DAY1 covers SQL injection prevention, bcrypt password hashing, and proper logging patterns. DAY2 covers JWT authentication from hand-written implementation to production integration with CSRF protection and security headers. DAY3 covers GitHub OAuth2.0 third-party login. DAY4 covers HTTPS/TLS encryption with OpenSSL self-signed certificates and CORS cross-origin resource sharing with FastAPI CORSMiddleware.
 
 </details>
 
