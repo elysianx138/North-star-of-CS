@@ -1,0 +1,22 @@
+<!DOCTYPE html>
+<html>
+<body>
+  <button onclick="testCORS()">点我调 API</button>
+  <pre id="result"></pre>
+
+  <script>
+    async function testCORS() {
+      try {
+        const res = await fetch("http://localhost:8000/login?username=admin&password=123456",{
+            method:"POST"
+        })
+    
+        const data = await res.json()
+        document.getElementById("result").textContent = JSON.stringify(data, null, 2)
+      } catch (err) {
+        document.getElementById("result").textContent = "❌ 错误: " + err.message
+      }
+    }
+  </script>
+</body>
+</html>
