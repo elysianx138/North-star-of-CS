@@ -1,7 +1,7 @@
 # Week 1 — 内存 & 指针 & 编译（AI Infra 地基）
 
 > **目标：** 建立 C++ 底层思维——内存怎么布局、指针的本质、编译的完整流水线。
-> **最终方向：** 理解推理框架（vLLM、llama.cpp）的显存管理、KVCache、内存池等概念。
+
 
 ---
 
@@ -31,13 +31,15 @@
 - 二级指针 `int**` & 指针引用 `int*&`
 - 指针 vs 引用实战选用原则
 
-## DAY 4 — 数组 & 动态内存管理 🔲
-- 数组与指针的关系（decay、`arr` = `&arr[0]`）
-- C 风格字符串（`char[]` vs `char*` vs `std::string`）
-- `new`/`delete` 的底层机制
-- `malloc/free` vs `new/delete`
-- 野指针 / 悬空指针 / 内存泄漏
-- `new[]`/`delete[]` 数组版本
+## DAY 4 — 数组 & 动态内存管理 ✅
+- 数组本质 vs 指针：`arr` = `&arr[0]`，但 `sizeof(arr)` ≠ `sizeof(ptr)`
+- 数组名 decay：大多数情况退化成首元素指针，但 `sizeof`/`&arr` 时保留数组类型
+- 指针步长由指向类型决定（`int*` + 1 = 4B，`int(*)[4]` + 1 = 16B）
+- C 风格字符串：`char[]` 栈上可改 vs `const char*` 指向只读区不可改，结尾隐藏 `\0`
+- `new`/`delete` vs `malloc`/`free`：new 分配内存 + 调构造函数，malloc 只分配
+- AI Infra 用内存池（启动时一次性 malloc，后续指针偏移），不用频繁 new
+- 野指针（未初始化）、悬空指针（释放后还在用）、内存泄漏（只 new 不 delete）
+- 理解 Rust 出现的原因：解决 C++ 内存安全问题
 
 ## DAY 5 — 函数深入 🔲
 - 传值 vs 传引用 vs 传指针（汇编对比）
