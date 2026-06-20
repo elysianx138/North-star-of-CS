@@ -1,21 +1,23 @@
 from database import get_redis
-from fastapi import APIRouter,HTTPException,Header
+from fastapi import APIRouter,HTTPException,Header,Request
 from db import db
-from pydantic import BaseModel
+from pydantic import BaseModel,Field
 from utils.jwt import encode as jwt_encode,decode as jwt_decode
 import random,bcrypt,logging,os,time
+from utils.rate_limit import rate_limit_login
 
 logger = logging.getLogger(__name__)
 router = APIRouter()
 
 class User(BaseModel):
-    username:str
-    userpassword:str
-    email:str
+    username:str=Field(min_length=3,max_length=20)
+    userpassword:str=Field(min_length=8,patter="^(?=.*[A-Za-z])(?=.*\d).+$")
+    email:str=Field(pattern=r"^[\w\.-]+@[\w\.-]+\.\w{2,}$")
 
 
 @router.post("/logup")
-def logup(user:User):
+def logup(user:User,request:Request):
+    rate_limit_login(request,"rate:logup",3600,3)
     logger.info(f"Register attempt:{user.username}")
     redis = get_redis()
     # search username in User_db and Redis
@@ -43,7 +45,9 @@ def logup(user:User):
     return {"message":"User created successfully","id":new_id}
     
 @router.post("/login")
-def login(user:User):
+def login(user:User,request:Request):
+    logger.info(f"Prevent brute - force attacks")
+    rate_limit_login(request,"rate:login",60,5)
     logger.info(f"Login attempt:{user.username}")
     redis = get_redis()
     

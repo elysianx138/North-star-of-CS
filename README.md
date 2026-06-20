@@ -50,11 +50,11 @@
 | 🐍 **Python** | 📋 Planned | `██░░░░░░░░░░░░░░░░` 10% | Coming Soon |
 | 🤖 **AI / LLM** | 📋 Planned | `░░░░░░░░░░░░░░░░░░` 0% | Coming Soon |
 | 🗄️ **MySQL** | ✅ Complete | `████████████████░░░░` 85% | [→ Go](MySQL/DAY1/) |
-| 🛡️ **Security** | 🚧 In Progress | `████████████░░░░░░` 80% | [→ Go](Security/DAY4/) |
+| 🛡️ **Security** | ✅ Complete | `████████████████████` 100% | [→ Go](Security/DAY5/) |
 | 🌐 **Web Frontend** | 📋 Planned | `░░░░░░░░░░░░░░░░░░` 0% | Coming Soon |
 | ⚡ **C++** | 🚧 In Progress (DAY1-3 ✅) | `██████░░░░░░░░░░░░` 30% | [→ Go](C++/Week1/DAY3/) |
 
-**Total Progress:** `████████░░░░░░░░░░░░` **43%** · 9/∞ topics
+**Total Progress:** `██████████░░░░░░░░░░` **52%** · 9/∞ topics
 
 </div>
 
@@ -164,10 +164,16 @@
 | | Part 3: CSRF Protection + Security Headers | ✅ | X-Frame-Options + HSTS |
 | **03** | 🌐 OAuth2.0 GitHub Login | ✅ Complete | FastAPI + httpx + GitHub OAuth |
 | **04** | 🔒 HTTPS/TLS + CORS | ✅ Complete | OpenSSL + CORSMiddleware |
+| **05** | 🛡️ Enterprise Security Hardening | ✅ Complete | CSP + Rate Limiting + Input Validation |
+| | Part 1: CSP replaces deprecated X-XSS-Protection | ✅ | Content-Security-Policy header |
+| | Part 2: Password Policy with Pydantic Field | ✅ | min_length / pattern regex |
+| | Part 3: Redis Rate Limiting (IP + user_id) | ✅ | INCR + EXPIRE, 429 Too Many Requests |
+| | Part 4: Anti-Crawler Strategy & Attack Cost | ✅ | CAPTCHA / Email verification / Reputation |
+| | Part 5: Complete Security Checklist | ✅ | 12 attack types & defenses covered |
 
-**📄 Documentation:** [Security/DAY1/README.md](Security/DAY1/README.md) · [DAY2 README](Security/DAY2/README.md) · [DAY4 README](Security/DAY4/README.md)
+**📄 Documentation:** [Security/DAY1/README.md](Security/DAY1/README.md) · [DAY2 README](Security/DAY2/README.md) · [DAY4 README](Security/DAY4/README.md) · [DAY5 README](Security/DAY5/README.md)
 
-> DAY1 covers SQL injection prevention, bcrypt password hashing, and proper logging patterns. DAY2 covers JWT authentication from hand-written implementation to production integration with CSRF protection and security headers. DAY3 covers GitHub OAuth2.0 third-party login. DAY4 covers HTTPS/TLS encryption with OpenSSL self-signed certificates and CORS cross-origin resource sharing with FastAPI CORSMiddleware.
+> DAY1 covers SQL injection prevention, bcrypt password hashing, and proper logging patterns. DAY2 covers JWT authentication from hand-written implementation to production integration with CSRF protection and security headers. DAY3 covers GitHub OAuth2.0 third-party login. DAY4 covers HTTPS/TLS encryption with OpenSSL self-signed certificates and CORS cross-origin resource sharing with FastAPI CORSMiddleware. DAY5 covers CSP replacing deprecated X-XSS-Protection, Pydantic password validation, Redis three-layer rate limiting (IP-based login/register + user_id-based operations), and a complete security checklist mapping 12 attack types to their defenses.
 
 </details>
 
@@ -229,7 +235,7 @@
 - [x] 🤖 LangChain RAG — AI knowledge base assistant
 - [ ] 🐍 Python Deep Dive — Advanced features
 - [ ] 🗄️ MySQL — Relational databases (DAY1-3 ✅)
-- [ ] 🛡️ Security — Web security basics (DAY1 ✅)
+- [x] 🛡️ Security — Web security basics (DAY1-5 ✅)
 - [ ] 🌐 Web Frontend — HTML/CSS/JS/Vue
 - [ ] ☁️ Cloud Deployment — AWS/Azure/aliyun
 

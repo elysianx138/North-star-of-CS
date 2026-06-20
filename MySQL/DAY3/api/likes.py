@@ -1,7 +1,11 @@
 from database import get_redis
-from fastapi import APIRouter,HTTPException
+from fastapi import APIRouter,HTTPException,Header
 from db import db
 import random
+from utils.jwt import decode as jwt_decode
+from utils.rate_limit import rate_limit_user
+import os
+
 
 router = APIRouter()
 
@@ -12,7 +16,12 @@ lua_script = """
     """
 
 @router.post("/articles/{article_id}/likes")
-def post_article_likes(article_id:int):
+def post_article_likes(article_id:int,authorization:str=Header(None)):
+    token = authorization.split(" ")[1]
+    payload = jwt_decode(token,os.getenv("JWT_SECRET","myblog_jwt_secret"))
+    if not payload:
+        raise HTTPException(status_code=401,detail="Invalid token")
+    rate_limit_user(payload["user_id"],"rate:like",60,5)
     redis = get_redis()
     cache_key = f"article:{article_id}:likes"
 

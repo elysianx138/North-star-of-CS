@@ -3,6 +3,7 @@ from fastapi import APIRouter,HTTPException,Header
 from db import db
 from pydantic import BaseModel
 from utils.jwt import decode as jwt_decode
+from utils.rate_limit import rate_limit_user
 import random,os
 
 router = APIRouter()
@@ -19,6 +20,7 @@ def post_articles(article:Article,authorization:str=Header(None)):
     payload = jwt_decode(token,os.getenv("JWT_SECRET","myblog_jwt_secret"))
     if not payload:
         raise HTTPException(status_code=401,detail="Invalid token")
+    rate_limit_user(payload["user_id"],"rate:article",360,10)
     redis = get_redis()
     article_id = db.insert("INSERT INTO articles (title,content,author_id) VALUES (%s,%s,%s)", (article.title,article.content,payload["user_id"]))
     if article.tags:

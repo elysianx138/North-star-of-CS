@@ -35,8 +35,8 @@ async def add_security_headers(request,call_next):
     response.headers["X-Content-Type-Options"] = "nosniff"
     # Clickjacking protection
     response.headers["X-Frame-Options"] = "DENY"
-    # XXS Protection
-    response.headers["X-XSS-Protection"] = "1; mode=block"
+    # CSP Protection
+    response.headers["Content-Security-Policy"] = "default-src 'self'"
     # HTTPS Strict Transport Security
     response.headers["Strict-Transport-Security"] = "max-age=31536000"
     return response
