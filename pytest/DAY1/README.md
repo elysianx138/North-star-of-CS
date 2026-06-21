@@ -23,10 +23,10 @@ print(result)
 # 有 assert：写一次检查规则，以后 pytest 自动判定
 def test_some_function():
     result = some_function()
-    assert result == "预期结果"  # ✅ 绿 = 符合预期，❌ 红 = 出差了
+    assert result == "预期结果"  # ✅ 绿 = 符合预期，❌ 红 = 出岔了
 ```
 
-### 判断标准
+### 效果
 
 assert 后面跟一个表达式，**True 就过，False 就挂**：
 
