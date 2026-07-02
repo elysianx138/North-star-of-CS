@@ -1,0 +1,1153 @@
+<!DOCTYPE html>
+<html lang="en" data-theme="dark">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>North Star of CS</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,400;0,700;0,900;1,400&family=Sora:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+  <style>
+    :root {
+      --bg-deep: #050510;
+      --bg-surface: #0a0a1a;
+      --glass-bg: rgba(255, 255, 255, 0.04);
+      --glass-border: rgba(255, 255, 255, 0.06);
+      --glass-hover: rgba(255, 255, 255, 0.08);
+      --glass-shadow: 0 8px 32px rgba(0, 0, 0, 0.4);
+      --gold: #F5C842;
+      --gold-dim: rgba(245, 200, 66, 0.12);
+      --gold-glow: rgba(245, 200, 66, 0.06);
+      --teal: #00D4AA;
+      --teal-dim: rgba(0, 212, 170, 0.08);
+      --text-primary: #eceaf2;
+      --text-secondary: #9794ab;
+      --text-muted: #5f5c75;
+      --border-subtle: rgba(255, 255, 255, 0.04);
+      --card-radius: 16px;
+      --blur-amount: 24px;
+      --nav-bg: rgba(5, 5, 16, 0.6);
+      --font-display: 'Playfair Display', Georgia, serif;
+      --font-body: 'Sora', -apple-system, sans-serif;
+      --ease-smooth: cubic-bezier(0.16, 1, 0.3, 1);
+      --ease-spring: cubic-bezier(0.34, 1.56, 0.64, 1);
+      --star-color-1: '255, 255, 255';
+      --star-color-2: '245, 200, 66';
+      --star-color-3: '0, 212, 170';
+    }
+
+    [data-theme="light"] {
+      --bg-deep: #f5f3ef;
+      --bg-surface: #eeebe6;
+      --glass-bg: rgba(255, 255, 255, 0.55);
+      --glass-border: rgba(255, 255, 255, 0.6);
+      --glass-hover: rgba(255, 255, 255, 0.75);
+      --glass-shadow: 0 4px 24px rgba(0, 0, 0, 0.05), 0 1px 4px rgba(0, 0, 0, 0.03);
+      --gold: #B8860B;
+      --gold-dim: rgba(184, 134, 11, 0.08);
+      --gold-glow: rgba(184, 134, 11, 0.04);
+      --teal: #008B6E;
+      --teal-dim: rgba(0, 139, 110, 0.06);
+      --text-primary: #1a1a2e;
+      --text-secondary: #5a5a74;
+      --text-muted: #9090a4;
+      --border-subtle: rgba(0, 0, 0, 0.05);
+      --nav-bg: rgba(245, 243, 239, 0.7);
+      --star-color-1: '200, 200, 190';
+      --star-color-2: '184, 134, 11';
+      --star-color-3: '0, 139, 110';
+    }
+
+    *, *::before, *::after { margin: 0; padding: 0; box-sizing: border-box; }
+    html { scroll-behavior: smooth; }
+
+    body {
+      font-family: var(--font-body);
+      background: var(--bg-deep);
+      color: var(--text-primary);
+      line-height: 1.7;
+      overflow-x: hidden;
+      -webkit-font-smoothing: antialiased;
+      transition: background 0.6s var(--ease-smooth), color 0.6s var(--ease-smooth);
+    }
+    a { color: inherit; text-decoration: none; }
+    img { max-width: 100%; display: block; }
+
+    #starfield {
+      position: fixed;
+      inset: 0;
+      z-index: 0;
+      pointer-events: none;
+      opacity: 0.65;
+      transition: opacity 0.8s var(--ease-smooth);
+    }
+    [data-theme="light"] #starfield { opacity: 0.15; }
+
+    .container {
+      max-width: 1200px;
+      margin: 0 auto;
+      padding: 0 24px;
+      position: relative;
+      z-index: 1;
+    }
+
+    section {
+      padding: 100px 0;
+      position: relative;
+    }
+
+    .section-label {
+      font-family: var(--font-body);
+      font-size: 11px;
+      font-weight: 600;
+      letter-spacing: 4px;
+      text-transform: uppercase;
+      color: var(--gold);
+      margin-bottom: 12px;
+    }
+
+    .section-title {
+      font-family: var(--font-display);
+      font-size: clamp(32px, 5vw, 56px);
+      font-weight: 700;
+      line-height: 1.15;
+      margin-bottom: 16px;
+    }
+    .section-title .gold { color: var(--gold); }
+
+    .section-sub {
+      font-size: 16px;
+      color: var(--text-secondary);
+      max-width: 520px;
+      line-height: 1.8;
+    }
+
+    .glass {
+      background: var(--glass-bg);
+      backdrop-filter: blur(var(--blur-amount)) saturate(1.4);
+      -webkit-backdrop-filter: blur(var(--blur-amount)) saturate(1.4);
+      border: 1px solid var(--glass-border);
+      box-shadow: var(--glass-shadow);
+    }
+
+    /* ---- Nav ---- */
+    nav {
+      position: fixed;
+      top: 0; left: 0; right: 0;
+      z-index: 100;
+      padding: 16px 0;
+      background: transparent;
+      border-bottom: 1px solid transparent;
+      transition: background 0.5s var(--ease-smooth), border-color 0.5s var(--ease-smooth), backdrop-filter 0.5s var(--ease-smooth);
+    }
+    nav.scrolled {
+      background: var(--nav-bg);
+      backdrop-filter: blur(30px) saturate(1.6);
+      -webkit-backdrop-filter: blur(30px) saturate(1.6);
+      border-bottom: 1px solid var(--glass-border);
+    }
+    .nav-inner {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+    }
+    .nav-logo {
+      font-family: var(--font-display);
+      font-size: 20px;
+      font-weight: 700;
+      color: var(--gold);
+      letter-spacing: -0.3px;
+      transition: color 0.3s var(--ease-smooth);
+    }
+    .nav-logo span { color: var(--text-primary); transition: color 0.3s var(--ease-smooth); }
+    .nav-links { display: flex; gap: 24px; align-items: center; }
+    .nav-links a {
+      font-size: 13px;
+      font-weight: 500;
+      color: var(--text-secondary);
+      transition: color 0.3s var(--ease-smooth);
+      letter-spacing: 0.3px;
+      position: relative;
+    }
+    .nav-links a::after {
+      content: '';
+      position: absolute;
+      bottom: -4px; left: 0;
+      width: 0; height: 1px;
+      background: var(--gold);
+      transition: width 0.4s var(--ease-smooth);
+    }
+    .nav-links a:hover { color: var(--gold); }
+    .nav-links a:hover::after { width: 100%; }
+
+    .nav-gh {
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      width: 36px;
+      height: 36px;
+      border-radius: 50%;
+      background: var(--glass-bg);
+      border: 1px solid var(--glass-border);
+      color: var(--text-secondary);
+      transition: background 0.3s var(--ease-smooth), color 0.3s var(--ease-smooth), transform 0.3s var(--ease-spring);
+    }
+    .nav-gh:hover {
+      background: var(--gold-dim);
+      color: var(--gold);
+      transform: scale(1.08);
+    }
+    .nav-gh svg { width: 18px; height: 18px; }
+
+    .theme-toggle {
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      width: 36px;
+      height: 36px;
+      border-radius: 50%;
+      background: transparent;
+      border: none;
+      color: var(--text-secondary);
+      cursor: pointer;
+      transition: background 0.3s var(--ease-smooth), color 0.3s var(--ease-smooth), transform 0.3s var(--ease-spring);
+    }
+    .theme-toggle:hover {
+      background: var(--glass-hover);
+      color: var(--gold);
+      transform: scale(1.08);
+    }
+    .theme-toggle svg { width: 18px; height: 18px; }
+    .theme-toggle .sun-icon { display: none; }
+    .theme-toggle .moon-icon { display: block; }
+    [data-theme="light"] .theme-toggle .sun-icon { display: block; }
+    [data-theme="light"] .theme-toggle .moon-icon { display: none; }
+
+    /* ---- Hero ---- */
+    .hero {
+      min-height: 100vh;
+      display: flex;
+      align-items: center;
+      padding: 120px 0 80px;
+    }
+    .hero-grid {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 60px;
+      align-items: center;
+    }
+    .hero-compass {
+      display: flex;
+      justify-content: center;
+      align-items: center;
+    }
+    .compass {
+      position: relative;
+      width: 280px;
+      height: 280px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+    }
+    .compass-ring {
+      position: absolute;
+      border-radius: 50%;
+    }
+    .compass-ring:nth-child(1) {
+      width: 280px; height: 280px;
+      border: 1px solid var(--glass-border);
+      animation: spin 30s linear infinite;
+    }
+    .compass-ring:nth-child(2) {
+      width: 210px; height: 210px;
+      border: 1px dashed var(--teal-dim);
+      animation: spin-reverse 22s linear infinite;
+    }
+    .compass-ring:nth-child(3) {
+      width: 150px; height: 150px;
+      border: 1.5px solid var(--gold-dim);
+      animation: spin 18s linear infinite;
+    }
+    .compass-ring:nth-child(4) {
+      width: 80px; height: 80px;
+      border: none;
+      background: radial-gradient(circle, var(--gold-dim) 0%, transparent 70%);
+      animation: pulse-glow 4s var(--ease-smooth) infinite;
+    }
+    .compass-star {
+      font-size: 48px;
+      line-height: 1;
+      position: relative;
+      z-index: 2;
+      filter: drop-shadow(0 0 20px rgba(245, 200, 66, 0.2)) drop-shadow(0 0 60px rgba(245, 200, 66, 0.08));
+      animation: pulse-star 3s var(--ease-smooth) infinite;
+    }
+    [data-theme="light"] .compass-star {
+      filter: drop-shadow(0 0 20px rgba(184, 134, 11, 0.15)) drop-shadow(0 0 40px rgba(184, 134, 11, 0.06));
+    }
+    .hero-tag {
+      font-size: 14px;
+      font-weight: 600;
+      letter-spacing: 3px;
+      text-transform: uppercase;
+      color: var(--gold);
+      margin-bottom: 16px;
+    }
+    .hero h1 {
+      font-family: var(--font-display);
+      font-size: clamp(42px, 6vw, 76px);
+      font-weight: 900;
+      line-height: 1.05;
+      letter-spacing: -1.5px;
+      margin-bottom: 20px;
+    }
+    .hero h1 .gold { color: var(--gold); }
+    .hero p {
+      font-size: 17px;
+      color: var(--text-secondary);
+      line-height: 1.8;
+      max-width: 440px;
+      margin-bottom: 36px;
+    }
+    .hero-actions {
+      display: flex;
+      gap: 16px;
+      flex-wrap: wrap;
+    }
+    .btn-primary {
+      display: inline-flex;
+      align-items: center;
+      gap: 8px;
+      padding: 14px 32px;
+      background: var(--gold);
+      color: #050510;
+      font-family: var(--font-body);
+      font-size: 14px;
+      font-weight: 600;
+      border: none;
+      cursor: pointer;
+      transition: transform 0.4s var(--ease-spring), box-shadow 0.4s var(--ease-smooth);
+    }
+    .btn-primary:hover {
+      transform: translateY(-3px);
+      box-shadow: 0 12px 40px rgba(245, 200, 66, 0.2);
+    }
+    .btn-secondary {
+      display: inline-flex;
+      align-items: center;
+      gap: 8px;
+      padding: 14px 32px;
+      background: var(--glass-bg);
+      color: var(--text-primary);
+      font-family: var(--font-body);
+      font-size: 14px;
+      font-weight: 500;
+      border: 1px solid var(--glass-border);
+      backdrop-filter: blur(12px) saturate(1.3);
+      -webkit-backdrop-filter: blur(12px) saturate(1.3);
+      cursor: pointer;
+      transition: border-color 0.3s var(--ease-smooth), color 0.3s var(--ease-smooth), transform 0.4s var(--ease-spring), background 0.3s var(--ease-smooth);
+    }
+    .btn-secondary:hover { border-color: var(--gold); color: var(--gold); transform: translateY(-2px); background: var(--gold-dim); }
+
+    .scroll-indicator {
+      position: absolute;
+      bottom: 32px;
+      left: 50%;
+      transform: translateX(-50%);
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      gap: 8px;
+      color: var(--text-muted);
+      font-size: 10px;
+      letter-spacing: 2px;
+      text-transform: uppercase;
+      transition: opacity 0.6s var(--ease-smooth), color 0.3s var(--ease-smooth);
+      opacity: 0.5;
+    }
+    .scroll-line {
+      width: 1px;
+      height: 40px;
+      background: linear-gradient(to bottom, var(--text-muted), transparent);
+      animation: scrollPulse 2.5s var(--ease-smooth) infinite;
+    }
+
+    /* ---- Stats ---- */
+    .stats {
+      padding: 48px 0;
+      border-top: 1px solid var(--border-subtle);
+      border-bottom: 1px solid var(--border-subtle);
+      background: var(--bg-surface);
+      transition: background 0.6s var(--ease-smooth), border-color 0.6s var(--ease-smooth);
+    }
+    .stats-grid {
+      display: grid;
+      grid-template-columns: repeat(4, 1fr);
+      gap: 24px;
+    }
+    .stat-item {
+      text-align: center;
+      padding: 28px 20px;
+      border-radius: var(--card-radius);
+      background: var(--glass-bg);
+      backdrop-filter: blur(20px) saturate(1.3);
+      -webkit-backdrop-filter: blur(20px) saturate(1.3);
+      border: 1px solid var(--glass-border);
+      box-shadow: var(--glass-shadow);
+      transition: background 0.4s var(--ease-smooth), border-color 0.4s var(--ease-smooth), transform 0.4s var(--ease-smooth);
+    }
+    .stat-item:hover { transform: translateY(-2px); }
+    .stat-number {
+      font-family: var(--font-display);
+      font-size: 40px;
+      font-weight: 700;
+      color: var(--gold);
+      line-height: 1;
+      margin-bottom: 6px;
+    }
+    .stat-label {
+      font-size: 11px;
+      letter-spacing: 1.5px;
+      text-transform: uppercase;
+      color: var(--text-muted);
+    }
+
+    /* ---- Topics ---- */
+    .topics { transition: background 0.6s var(--ease-smooth); }
+    .topics-header {
+      display: flex;
+      justify-content: space-between;
+      align-items: flex-end;
+      margin-bottom: 48px;
+      gap: 40px;
+    }
+    .topic-grid {
+      display: grid;
+      grid-template-columns: repeat(3, 1fr);
+      gap: 16px;
+    }
+    .topic-card {
+      padding: 32px 28px;
+      border-radius: var(--card-radius);
+      background: var(--glass-bg);
+      backdrop-filter: blur(var(--blur-amount)) saturate(1.4);
+      -webkit-backdrop-filter: blur(var(--blur-amount)) saturate(1.4);
+      border: 1px solid var(--glass-border);
+      box-shadow: var(--glass-shadow);
+      position: relative;
+      cursor: pointer;
+      display: flex;
+      flex-direction: column;
+      opacity: 0;
+      transform: translateY(30px);
+      transition: background 0.5s var(--ease-smooth), border-color 0.5s var(--ease-smooth), transform 0.5s var(--ease-smooth), opacity 0.8s var(--ease-smooth), box-shadow 0.5s var(--ease-smooth);
+    }
+    .topic-card.visible {
+      opacity: 1;
+      transform: translateY(0);
+    }
+    .topic-card:hover {
+      background: var(--glass-hover);
+      border-color: var(--gold-dim);
+      transform: translateY(-4px);
+      box-shadow: 0 12px 48px rgba(0, 0, 0, 0.3), 0 0 0 1px var(--gold-dim);
+    }
+    .topic-card:hover .topic-arrow {
+      opacity: 1;
+      transform: translate(4px, -4px);
+    }
+    .topic-card.wide { grid-column: span 2; }
+    .topic-card.full { grid-column: 1 / -1; }
+    .topic-card.planned { opacity: 0.7; }
+    .topic-card.planned.visible { opacity: 0.7; }
+    .topic-card.planned:hover { opacity: 0.9; }
+    .topic-icon {
+      font-size: 28px;
+      margin-bottom: 14px;
+      line-height: 1;
+    }
+    .topic-name {
+      font-family: var(--font-display);
+      font-size: 22px;
+      font-weight: 700;
+      margin-bottom: 4px;
+    }
+    .topic-meta {
+      display: flex;
+      align-items: center;
+      gap: 12px;
+      margin-bottom: 14px;
+    }
+    .topic-status {
+      font-size: 10px;
+      font-weight: 600;
+      letter-spacing: 1.5px;
+      text-transform: uppercase;
+      padding: 3px 10px;
+      border-radius: 4px;
+    }
+    .topic-status.done { color: var(--gold); background: var(--gold-dim); }
+    .topic-status.wip { color: var(--teal); background: var(--teal-dim); }
+    .topic-status.plan { color: var(--text-muted); background: rgba(255, 255, 255, 0.04); }
+    .topic-days {
+      font-size: 12px;
+      color: var(--text-muted);
+    }
+    .topic-desc {
+      font-size: 14px;
+      color: var(--text-secondary);
+      line-height: 1.7;
+      margin-bottom: 20px;
+      flex: 1;
+    }
+    .topic-progress-wrap { margin-top: auto; }
+    .topic-progress-bar {
+      width: 100%;
+      height: 4px;
+      border-radius: 2px;
+      background: rgba(255, 255, 255, 0.04);
+      margin-bottom: 8px;
+      overflow: hidden;
+    }
+    [data-theme="light"] .topic-progress-bar {
+      background: rgba(0, 0, 0, 0.05);
+    }
+    .topic-progress-fill {
+      height: 100%;
+      width: 0;
+      border-radius: 2px;
+      transition: width 1.4s cubic-bezier(0.16, 1, 0.3, 1);
+    }
+    .topic-card.visible .topic-progress-fill { width: var(--progress); }
+    .topic-progress-fill.gold { background: linear-gradient(90deg, var(--gold), #f7d97a); }
+    .topic-progress-fill.teal { background: linear-gradient(90deg, var(--teal), #00e6b5); }
+    .topic-progress-fill.muted { background: var(--text-muted); }
+    .topic-progress-text {
+      display: flex;
+      justify-content: space-between;
+      font-size: 11px;
+      color: var(--text-muted);
+      font-weight: 500;
+    }
+    .topic-arrow {
+      position: absolute;
+      top: 24px;
+      right: 24px;
+      font-size: 16px;
+      opacity: 0;
+      transition: transform 0.5s var(--ease-spring), opacity 0.4s var(--ease-smooth);
+    }
+
+    /* ---- Roadmap ---- */
+    .roadmap {
+      background: var(--bg-surface);
+      transition: background 0.6s var(--ease-smooth);
+    }
+    .roadmap-header { margin-bottom: 48px; }
+    .roadmap-grid {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 12px 40px;
+    }
+    .roadmap-item {
+      display: flex;
+      align-items: center;
+      gap: 14px;
+      padding: 14px 18px;
+      border-radius: 12px;
+      background: var(--glass-bg);
+      border: 1px solid var(--glass-border);
+      backdrop-filter: blur(16px) saturate(1.3);
+      -webkit-backdrop-filter: blur(16px) saturate(1.3);
+      transition: background 0.4s var(--ease-smooth), border-color 0.4s var(--ease-smooth), opacity 0.6s var(--ease-smooth), transform 0.6s var(--ease-smooth);
+      opacity: 0;
+      transform: translateX(-20px);
+    }
+    .roadmap-item.visible {
+      opacity: 1;
+      transform: translateX(0);
+    }
+    .roadmap-item:hover { border-color: var(--gold-dim); background: var(--glass-hover); }
+    .roadmap-check {
+      width: 24px;
+      height: 24px;
+      border-radius: 50%;
+      border: 2px solid var(--text-muted);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      flex-shrink: 0;
+      font-size: 11px;
+      font-weight: 700;
+      transition: background 0.4s var(--ease-smooth), border-color 0.4s var(--ease-smooth), transform 0.4s var(--ease-spring);
+    }
+    .roadmap-item.done .roadmap-check {
+      background: var(--gold);
+      border-color: var(--gold);
+      color: #050510;
+    }
+    .roadmap-item.wip .roadmap-check {
+      border-color: var(--teal);
+      animation: roadmap-pulse 2s var(--ease-smooth) infinite;
+    }
+    .roadmap-item.wip .roadmap-check::after {
+      content: '';
+      width: 8px; height: 8px;
+      border-radius: 50%;
+      background: var(--teal);
+    }
+    .roadmap-label {
+      font-size: 14px;
+      font-weight: 500;
+    }
+    .roadmap-label small {
+      color: var(--text-muted);
+      font-weight: 400;
+      font-size: 12px;
+      margin-left: 8px;
+    }
+
+    /* ---- Connect ---- */
+    .connect {
+      background: var(--bg-deep);
+      text-align: center;
+      transition: background 0.6s var(--ease-smooth);
+    }
+    .connect-inner { max-width: 600px; margin: 0 auto; }
+    .connect .section-title { text-align: center; }
+    .connect .section-sub { margin: 0 auto 40px; text-align: center; }
+    .social-links {
+      display: flex;
+      justify-content: center;
+      gap: 10px;
+      flex-wrap: wrap;
+    }
+    .social-link {
+      display: flex;
+      align-items: center;
+      gap: 8px;
+      padding: 12px 22px;
+      border-radius: var(--card-radius);
+      background: var(--glass-bg);
+      border: 1px solid var(--glass-border);
+      backdrop-filter: blur(16px) saturate(1.3);
+      -webkit-backdrop-filter: blur(16px) saturate(1.3);
+      font-size: 13px;
+      font-weight: 500;
+      color: var(--text-secondary);
+      transition: border-color 0.3s var(--ease-smooth), color 0.3s var(--ease-smooth), background 0.3s var(--ease-smooth), transform 0.4s var(--ease-spring), box-shadow 0.4s var(--ease-smooth);
+    }
+    .social-link:hover {
+      border-color: var(--gold-dim);
+      color: var(--gold);
+      background: var(--glass-hover);
+      transform: translateY(-3px);
+      box-shadow: 0 8px 24px rgba(0, 0, 0, 0.2);
+    }
+    .social-link svg { width: 18px; height: 18px; flex-shrink: 0; }
+
+    /* ---- Footer ---- */
+    footer {
+      padding: 32px 0;
+      border-top: 1px solid var(--border-subtle);
+      text-align: center;
+      transition: border-color 0.6s var(--ease-smooth);
+    }
+    footer p { font-size: 13px; color: var(--text-muted); }
+    footer .heart { color: var(--gold); }
+
+    /* ---- Animations ---- */
+    @keyframes spin { to { transform: rotate(360deg); } }
+    @keyframes spin-reverse { to { transform: rotate(-360deg); } }
+    @keyframes pulse-star {
+      0%, 100% { transform: scale(1); opacity: 1; }
+      50% { transform: scale(1.05); opacity: 0.85; }
+    }
+    @keyframes pulse-glow {
+      0%, 100% { transform: scale(1); opacity: 0.4; }
+      50% { transform: scale(1.4); opacity: 0.7; }
+    }
+    @keyframes scrollPulse {
+      0%, 100% { opacity: 0.3; transform: scaleY(1); }
+      50% { opacity: 0.8; transform: scaleY(1.3); }
+    }
+    @keyframes roadmap-pulse {
+      0%, 100% { box-shadow: 0 0 0 0 var(--teal-dim); }
+      50% { box-shadow: 0 0 0 8px transparent; }
+    }
+
+    /* ---- Reveal ---- */
+    [data-animate] {
+      opacity: 0;
+      transform: translateY(24px);
+      transition: opacity 0.8s var(--ease-smooth), transform 0.8s var(--ease-smooth);
+    }
+    [data-animate].visible {
+      opacity: 1;
+      transform: translateY(0);
+    }
+
+    /* ---- Responsive ---- */
+    @media (max-width: 1024px) {
+      .topic-grid { grid-template-columns: repeat(2, 1fr); }
+      .topic-card.wide { grid-column: span 2; }
+      .topic-card.full { grid-column: 1 / -1; }
+    }
+    @media (max-width: 768px) {
+      section { padding: 60px 0; }
+      .hero-grid {
+        grid-template-columns: 1fr;
+        gap: 40px;
+        text-align: center;
+      }
+      .hero p { margin: 0 auto 36px; }
+      .hero-actions { justify-content: center; }
+      .hero-compass { order: -1; }
+      .compass { width: 200px; height: 200px; }
+      .compass-ring:nth-child(1) { width: 200px; height: 200px; }
+      .compass-ring:nth-child(2) { width: 150px; height: 150px; }
+      .compass-ring:nth-child(3) { width: 110px; height: 110px; }
+      .compass-ring:nth-child(4) { width: 60px; height: 60px; }
+      .compass-star { font-size: 36px; }
+      .stats-grid { grid-template-columns: repeat(2, 1fr); gap: 16px; }
+      .stat-item { padding: 20px 16px; }
+      .stat-number { font-size: 32px; }
+      .topic-grid { grid-template-columns: 1fr; gap: 12px; }
+      .topic-card.wide { grid-column: 1; }
+      .topic-card.full { grid-column: 1; }
+      .topics-header { flex-direction: column; align-items: flex-start; }
+      .roadmap-grid { grid-template-columns: 1fr; }
+      .nav-links a:not(.nav-gh):not(.theme-toggle) { display: none; }
+      .nav-links { gap: 12px; }
+    }
+    @media (max-width: 480px) {
+      .container { padding: 0 16px; }
+      .stat-number { font-size: 28px; }
+      .topic-card { padding: 24px 20px; }
+      .social-link { padding: 10px 16px; font-size: 12px; }
+      .social-link span { display: none; }
+    }
+    @media (prefers-reduced-motion: reduce) {
+      *, *::before, *::after {
+        animation-duration: 0.01ms !important;
+        transition-duration: 0.01ms !important;
+      }
+    }
+  </style>
+</head>
+<body>
+
+  <canvas id="starfield"></canvas>
+
+  <!-- Nav -->
+  <nav id="navbar">
+    <div class="container nav-inner">
+      <a href="#" class="nav-logo">★ <span>North Star of CS</span></a>
+      <div class="nav-links">
+        <a href="#topics">Topics</a>
+        <a href="#roadmap">Roadmap</a>
+        <a href="#connect">Connect</a>
+        <a href="wiki/" class="nav-wiki">Wiki</a>
+        <button id="themeToggle" class="theme-toggle" aria-label="Toggle theme">
+          <svg class="sun-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+            <circle cx="12" cy="12" r="5"/><line x1="12" y1="1" x2="12" y2="3"/><line x1="12" y1="21" x2="12" y2="23"/><line x1="4.22" y1="4.22" x2="5.64" y2="5.64"/><line x1="18.36" y1="18.36" x2="19.78" y2="19.78"/><line x1="1" y1="12" x2="3" y2="12"/><line x1="21" y1="12" x2="23" y2="12"/><line x1="4.22" y1="19.78" x2="5.64" y2="18.36"/><line x1="18.36" y1="5.64" x2="19.78" y2="4.22"/>
+          </svg>
+          <svg class="moon-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+            <path d="M21 12.79A9 9 0 1 1 11.21 3 7 7 0 0 0 21 12.79z"/>
+          </svg>
+        </button>
+        <a href="https://github.com/elysianx138/North-star-of-CS" class="nav-gh" target="_blank" aria-label="GitHub">
+          <svg viewBox="0 0 24 24" fill="currentColor"><path d="M12 0c-6.626 0-12 5.373-12 12 0 5.302 3.438 9.8 8.207 11.387.599.111.793-.261.793-.577v-2.234c-3.338.726-4.033-1.416-4.033-1.416-.546-1.387-1.333-1.756-1.333-1.756-1.089-.745.083-.729.083-.729 1.205.084 1.839 1.237 1.839 1.237 1.07 1.834 2.807 1.304 3.492.997.107-.775.418-1.305.762-1.604-2.665-.305-5.467-1.334-5.467-5.931 0-1.311.469-2.381 1.236-3.221-.124-.303-.535-1.524.117-3.176 0 0 1.008-.322 3.301 1.23.957-.266 1.983-.399 3.003-.404 1.02.005 2.047.138 3.006.404 2.291-1.552 3.297-1.23 3.297-1.23.653 1.653.242 2.874.118 3.176.77.84 1.235 1.911 1.235 3.221 0 4.609-2.807 5.624-5.479 5.921.43.372.823 1.102.823 2.222v3.293c0 .319.192.694.801.576 4.765-1.589 8.199-6.086 8.199-11.386 0-6.627-5.373-12-12-12z"/></svg>
+        </a>
+      </div>
+    </div>
+  </nav>
+
+  <!-- Hero -->
+  <section class="hero" id="hero">
+    <div class="container hero-grid">
+      <div class="hero-text">
+        <div class="hero-tag" data-animate>CS Learning Journey</div>
+        <h1 data-animate>
+          North Star<br>
+          <span class="gold">of CS</span>
+        </h1>
+        <p data-animate>Your CS knowledge north star — from zero to mastery. Daily practice, daily output, daily improvement.</p>
+        <div class="hero-actions" data-animate>
+          <a href="#topics" class="btn-primary">Explore Topics →</a>
+          <a href="https://github.com/elysianx138/North-star-of-CS" class="btn-secondary" target="_blank">View on GitHub</a>
+        </div>
+      </div>
+      <div class="hero-compass" data-animate>
+        <div class="compass">
+          <div class="compass-ring"></div>
+          <div class="compass-ring"></div>
+          <div class="compass-ring"></div>
+          <div class="compass-ring"></div>
+          <span class="compass-star">★</span>
+        </div>
+      </div>
+    </div>
+    <div class="scroll-indicator">
+      <span>Scroll</span>
+      <div class="scroll-line"></div>
+    </div>
+  </section>
+
+  <!-- Stats -->
+  <section class="stats">
+    <div class="container">
+      <div class="stats-grid">
+        <div class="stat-item" data-animate>
+          <div class="stat-number" data-count="9">0</div>
+          <div class="stat-label">Topics</div>
+        </div>
+        <div class="stat-item" data-animate>
+          <div class="stat-number" data-count="53">0</div>
+          <div class="stat-label">% Complete</div>
+        </div>
+        <div class="stat-item" data-animate>
+          <div class="stat-number" data-count="17">0</div>
+          <div class="stat-label">Days of Content</div>
+        </div>
+        <div class="stat-item" data-animate>
+          <div class="stat-number" data-count="4">0</div>
+          <div class="stat-label">Complete Topics</div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- Topics -->
+  <section class="topics" id="topics">
+    <div class="container">
+      <div class="topics-header" data-animate>
+        <div>
+          <div class="section-label">Learning Path</div>
+          <h2 class="section-title">Explore <span class="gold">Topics</span></h2>
+        </div>
+        <p class="section-sub">Every topic includes hands-on code, detailed READMEs, and progressive challenges from beginner to advanced.</p>
+      </div>
+      <div class="topic-grid">
+
+        <a href="Docker/" class="topic-card wide" style="--progress: 100%" data-delay="0">
+          <span class="topic-arrow">↗</span>
+          <span class="topic-icon">🐳</span>
+          <div class="topic-name">Docker</div>
+          <div class="topic-meta">
+            <span class="topic-status done">Complete</span>
+            <span class="topic-days">4 days</span>
+          </div>
+          <p class="topic-desc">Containerization from installation to production deployment. Multi-stage builds, Compose, Chinese mirrors &amp; optimization.</p>
+          <div class="topic-progress-wrap">
+            <div class="topic-progress-bar"><div class="topic-progress-fill gold"></div></div>
+            <div class="topic-progress-text"><span>100%</span><span>Docker/</span></div>
+          </div>
+        </a>
+
+        <a href="Redis/" class="topic-card" style="--progress: 100%" data-delay="1">
+          <span class="topic-arrow">↗</span>
+          <span class="topic-icon">🗄️</span>
+          <div class="topic-name">Redis</div>
+          <div class="topic-meta">
+            <span class="topic-status done">Complete</span>
+            <span class="topic-days">4 days</span>
+          </div>
+          <p class="topic-desc">Caching in Python + FastAPI. Three major problems, blog caching, Pub/Sub, Pipeline, Lua, HA &amp; Persistence.</p>
+          <div class="topic-progress-wrap">
+            <div class="topic-progress-bar"><div class="topic-progress-fill gold"></div></div>
+            <div class="topic-progress-text"><span>100%</span><span>Redis/</span></div>
+          </div>
+        </a>
+
+        <a href="Security/" class="topic-card" style="--progress: 100%" data-delay="2">
+          <span class="topic-arrow">↗</span>
+          <span class="topic-icon">🛡️</span>
+          <div class="topic-name">Security</div>
+          <div class="topic-meta">
+            <span class="topic-status done">Complete</span>
+            <span class="topic-days">5 days</span>
+          </div>
+          <p class="topic-desc">Web security basics &amp; defensive coding. SQL injection, JWT, OAuth2.0, HTTPS/TLS, CSP, rate limiting.</p>
+          <div class="topic-progress-wrap">
+            <div class="topic-progress-bar"><div class="topic-progress-fill gold"></div></div>
+            <div class="topic-progress-text"><span>100%</span><span>Security/</span></div>
+          </div>
+        </a>
+
+        <a href="MySQL/" class="topic-card" style="--progress: 85%" data-delay="3">
+          <span class="topic-arrow">↗</span>
+          <span class="topic-icon">🗄️</span>
+          <div class="topic-name">MySQL</div>
+          <div class="topic-meta">
+            <span class="topic-status wip">In Progress</span>
+            <span class="topic-days">4 days</span>
+          </div>
+          <p class="topic-desc">SQL basics to Python + MySQL integration. CRUD, JOIN, transactions, FastAPI blog API with Redis caching.</p>
+          <div class="topic-progress-wrap">
+            <div class="topic-progress-bar"><div class="topic-progress-fill gold"></div></div>
+            <div class="topic-progress-text"><span>85%</span><span>MySQL/</span></div>
+          </div>
+        </a>
+
+        <a href="C++/" class="topic-card" style="--progress: 40%" data-delay="4">
+          <span class="topic-arrow">↗</span>
+          <span class="topic-icon">⚡</span>
+          <div class="topic-name">C++</div>
+          <div class="topic-meta">
+            <span class="topic-status wip">In Progress</span>
+            <span class="topic-days">4 days</span>
+          </div>
+          <p class="topic-desc">C++20 from zero. Compilation pipeline, multifile projects, memory model, and modern C++ practices.</p>
+          <div class="topic-progress-wrap">
+            <div class="topic-progress-bar"><div class="topic-progress-fill teal"></div></div>
+            <div class="topic-progress-text"><span>40%</span><span>C++/</span></div>
+          </div>
+        </a>
+
+        <a href="Redis/DAY1/" class="topic-card" style="--progress: 40%" data-delay="5">
+          <span class="topic-arrow">↗</span>
+          <span class="topic-icon">⚡</span>
+          <div class="topic-name">FastAPI</div>
+          <div class="topic-meta">
+            <span class="topic-status wip">In Progress</span>
+            <span class="topic-days">—</span>
+          </div>
+          <p class="topic-desc">Async web framework with Python. Used across Redis and MySQL projects for blog APIs and caching demos.</p>
+          <div class="topic-progress-wrap">
+            <div class="topic-progress-bar"><div class="topic-progress-fill teal"></div></div>
+            <div class="topic-progress-text"><span>40%</span><span>In Progress</span></div>
+          </div>
+        </a>
+
+        <div class="topic-card planned" style="--progress: 10%" data-delay="6">
+          <span class="topic-icon">🐍</span>
+          <div class="topic-name">Python</div>
+          <div class="topic-meta">
+            <span class="topic-status plan">Planned</span>
+          </div>
+          <p class="topic-desc">Python deep dive — advanced features, async/await, decorators, metaprogramming, and testing.</p>
+          <div class="topic-progress-wrap">
+            <div class="topic-progress-bar"><div class="topic-progress-fill muted"></div></div>
+            <div class="topic-progress-text"><span>10%</span><span>Coming Soon</span></div>
+          </div>
+        </div>
+
+        <div class="topic-card planned" style="--progress: 0%" data-delay="7">
+          <span class="topic-icon">🤖</span>
+          <div class="topic-name">AI / LLM</div>
+          <div class="topic-meta">
+            <span class="topic-status plan">Planned</span>
+          </div>
+          <p class="topic-desc">LLM, RAG, LangChain, vector databases, and AI agent development with practical projects.</p>
+          <div class="topic-progress-wrap">
+            <div class="topic-progress-bar"><div class="topic-progress-fill muted"></div></div>
+            <div class="topic-progress-text"><span>0%</span><span>Coming Soon</span></div>
+          </div>
+        </div>
+
+        <div class="topic-card full planned" style="--progress: 0%" data-delay="8">
+          <span class="topic-icon">🌐</span>
+          <div class="topic-name">Web Frontend</div>
+          <div class="topic-meta">
+            <span class="topic-status plan">Planned</span>
+          </div>
+          <p class="topic-desc">HTML/CSS/JS/React — building modern web interfaces with responsive design and component-based architecture.</p>
+          <div class="topic-progress-wrap">
+            <div class="topic-progress-bar"><div class="topic-progress-fill muted"></div></div>
+            <div class="topic-progress-text"><span>0%</span><span>Coming Soon</span></div>
+          </div>
+        </div>
+
+      </div>
+    </div>
+  </section>
+
+  <!-- Roadmap -->
+  <section class="roadmap" id="roadmap">
+    <div class="container">
+      <div class="roadmap-header" data-animate>
+        <div class="section-label">Progress</div>
+        <h2 class="section-title">Learning <span class="gold">Roadmap</span></h2>
+      </div>
+      <div class="roadmap-grid">
+        <div class="roadmap-item done" data-delay="0"><div class="roadmap-check">✓</div><span class="roadmap-label">Docker — Containerization basics</span></div>
+        <div class="roadmap-item done" data-delay="1"><div class="roadmap-check">✓</div><span class="roadmap-label">Redis — Caching &amp; data structures</span></div>
+        <div class="roadmap-item done" data-delay="2"><div class="roadmap-check">✓</div><span class="roadmap-label">Security — Web security basics <small>DAY1-5</small></span></div>
+        <div class="roadmap-item done" data-delay="3"><div class="roadmap-check">✓</div><span class="roadmap-label">FastAPI — Async web framework</span></div>
+        <div class="roadmap-item wip" data-delay="4"><div class="roadmap-check"></div><span class="roadmap-label">MySQL — Relational databases <small>85%</small></span></div>
+        <div class="roadmap-item wip" data-delay="5"><div class="roadmap-check"></div><span class="roadmap-label">C++ — Systems programming <small>40%</small></span></div>
+        <div class="roadmap-item" data-delay="6"><div class="roadmap-check"></div><span class="roadmap-label">Python Deep Dive — Advanced features</span></div>
+        <div class="roadmap-item" data-delay="7"><div class="roadmap-check"></div><span class="roadmap-label">Web Frontend — HTML/CSS/JS/Vue</span></div>
+        <div class="roadmap-item" data-delay="8"><div class="roadmap-check"></div><span class="roadmap-label">AI / LLM &amp; RAG — LangChain agents</span></div>
+        <div class="roadmap-item" data-delay="9"><div class="roadmap-check"></div><span class="roadmap-label">Cloud Deployment — AWS/Azure/aliyun</span></div>
+      </div>
+    </div>
+  </section>
+
+  <!-- Connect -->
+  <section class="connect" id="connect">
+    <div class="container connect-inner">
+      <div data-animate>
+        <div class="section-label">Connect</div>
+        <h2 class="section-title">Get in <span class="gold">Touch</span></h2>
+        <p class="section-sub">Built with ❤️ by a CS freshman, for every CS learner. Follow my journey or reach out for collaboration.</p>
+      </div>
+      <div class="social-links" data-animate>
+        <a href="https://github.com/elysianx138" class="social-link" target="_blank">
+          <svg viewBox="0 0 24 24" fill="currentColor"><path d="M12 0c-6.626 0-12 5.373-12 12 0 5.302 3.438 9.8 8.207 11.387.599.111.793-.261.793-.577v-2.234c-3.338.726-4.033-1.416-4.033-1.416-.546-1.387-1.333-1.756-1.333-1.756-1.089-.745.083-.729.083-.729 1.205.084 1.839 1.237 1.839 1.237 1.07 1.834 2.807 1.304 3.492.997.107-.775.418-1.305.762-1.604-2.665-.305-5.467-1.334-5.467-5.931 0-1.311.469-2.381 1.236-3.221-.124-.303-.535-1.524.117-3.176 0 0 1.008-.322 3.301 1.23.957-.266 1.983-.399 3.003-.404 1.02.005 2.047.138 3.006.404 2.291-1.552 3.297-1.23 3.297-1.23.653 1.653.242 2.874.118 3.176.77.84 1.235 1.911 1.235 3.221 0 4.609-2.807 5.624-5.479 5.921.43.372.823 1.102.823 2.222v3.293c0 .319.192.694.801.576 4.765-1.589 8.199-6.086 8.199-11.386 0-6.627-5.373-12-12-12z"/></svg>
+          <span>GitHub</span>
+        </a>
+        <a href="mailto:elysianx138@gmail.com" class="social-link" target="_blank">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="2" y="4" width="20" height="16" rx="2"/><path d="m22 7-8.97 5.7a1.94 1.94 0 0 1-2.06 0L2 7"/></svg>
+          <span>Email</span>
+        </a>
+        <a href="https://instagram.com/elysianx138" class="social-link" target="_blank">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="2" y="2" width="20" height="20" rx="5"/><path d="M16 11.37A4 4 0 1 1 12.63 8 4 4 0 0 1 16 11.37z"/><line x1="17.5" y1="6.5" x2="17.51" y2="6.5"/></svg>
+          <span>Instagram</span>
+        </a>
+        <a href="https://youtube.com/elysianx" class="social-link" target="_blank">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M22.54 6.42a2.78 2.78 0 0 0-1.94-2C18.88 4 12 4 12 4s-6.88 0-8.6.46a2.78 2.78 0 0 0-1.94 2A29 29 0 0 0 1 12a29 29 0 0 0 .46 5.58 2.78 2.78 0 0 0 1.94 2C5.12 20 12 20 12 20s6.88 0 8.6-.46a2.78 2.78 0 0 0 1.94-2A29 29 0 0 0 23 12a29 29 0 0 0-.46-5.58z"/><polygon points="9.75 15.02 15.5 12 9.75 8.98 9.75 15.02"/></svg>
+          <span>YouTube</span>
+        </a>
+        <a href="https://x.com/@johnchenmOwn" class="social-link" target="_blank">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M4 4l11.733 16h4.267l-11.733 -16zM4 20l6.768 -6.768M17.232 4.768l-4.464 4.464"/></svg>
+          <span>X / Twitter</span>
+        </a>
+      </div>
+    </div>
+  </section>
+
+  <!-- Footer -->
+  <footer>
+    <div class="container">
+      <p>Built with <span class="heart">❤️</span> by a CS freshman, for every CS learner.</p>
+    </div>
+  </footer>
+
+  <script>
+    // ========== Theme ==========
+    (function() {
+      const html = document.documentElement;
+      const toggle = document.getElementById('themeToggle');
+      const saved = localStorage.getItem('theme');
+      const prefersDark = window.matchMedia('(prefers-color-scheme: dark)').matches;
+
+      if (saved) {
+        html.setAttribute('data-theme', saved);
+      } else if (!prefersDark) {
+        html.setAttribute('data-theme', 'light');
+      }
+
+      toggle.addEventListener('click', () => {
+        const current = html.getAttribute('data-theme');
+        const next = current === 'dark' ? 'light' : 'dark';
+        html.setAttribute('data-theme', next);
+        localStorage.setItem('theme', next);
+      });
+    })();
+
+    // ========== Starfield Canvas ==========
+    (function() {
+      const canvas = document.getElementById('starfield');
+      const ctx = canvas.getContext('2d');
+      let stars = [];
+      let W, H;
+
+      function resize() {
+        W = canvas.width = window.innerWidth;
+        H = canvas.height = window.innerHeight;
+      }
+      window.addEventListener('resize', resize);
+      resize();
+
+      const count = Math.min(200, Math.floor(W * H / 5000));
+      for (let i = 0; i < count; i++) {
+        stars.push({
+          x: Math.random() * W, y: Math.random() * H,
+          r: Math.random() * 1.6 + 0.3,
+          alpha: Math.random() * 0.7 + 0.2,
+          speed: Math.random() * 0.006 + 0.002,
+          dir: Math.random() > 0.5 ? 1 : -1,
+          color: Math.random() > 0.85 ? 'gold' : Math.random() > 0.7 ? 'teal' : 'white'
+        });
+      }
+
+      function getColor(type, alpha) {
+        const html = document.documentElement;
+        const theme = html.getAttribute('data-theme') || 'dark';
+        const map = {
+          dark:  { white: `rgba(255,255,255,${alpha})`, gold: `rgba(245,200,66,${alpha})`, teal: `rgba(0,212,170,${alpha})` },
+          light: { white: `rgba(180,180,175,${alpha*0.4})`, gold: `rgba(184,134,11,${alpha*0.3})`, teal: `rgba(0,139,110,${alpha*0.3})` }
+        };
+        return map[theme][type];
+      }
+
+      let lastTheme = document.documentElement.getAttribute('data-theme') || 'dark';
+
+      function draw() {
+        const currentTheme = document.documentElement.getAttribute('data-theme') || 'dark';
+        ctx.clearRect(0, 0, W, H);
+        stars.forEach(s => {
+          s.alpha += s.speed * s.dir;
+          if (s.alpha > 1) { s.alpha = 1; s.dir *= -1; }
+          if (s.alpha < 0.05) { s.alpha = 0.05; s.dir *= -1; }
+          ctx.beginPath();
+          ctx.arc(s.x, s.y, s.r, 0, Math.PI * 2);
+          const brightness = currentTheme === 'light' ? 0.25 : 1;
+          ctx.fillStyle = getColor(s.color, s.alpha * brightness);
+          ctx.fill();
+        });
+        requestAnimationFrame(draw);
+      }
+      draw();
+    })();
+
+    // ========== Navbar ==========
+    const navbar = document.getElementById('navbar');
+    window.addEventListener('scroll', () => {
+      navbar.classList.toggle('scrolled', window.scrollY > 60);
+    }, { passive: true });
+
+    // ========== Intersection Observer ==========
+    const observer = new IntersectionObserver((entries) => {
+      entries.forEach(entry => {
+        if (entry.isIntersecting) {
+          const el = entry.target;
+          const delay = parseInt(el.dataset.delay) || 0;
+          setTimeout(() => el.classList.add('visible'), delay * 80);
+          observer.unobserve(el);
+        }
+      });
+    }, { threshold: 0.08, rootMargin: '0px 0px -40px 0px' });
+
+    document.querySelectorAll('[data-animate], .topic-card, .roadmap-item').forEach(el => observer.observe(el));
+
+    // ========== Stat Counter ==========
+    const statObserver = new IntersectionObserver((entries) => {
+      entries.forEach(entry => {
+        if (entry.isIntersecting) {
+          const el = entry.target;
+          const target = parseInt(el.dataset.count);
+          if (isNaN(target)) return;
+          let current = 0;
+          const step = Math.max(1, Math.ceil(target / 40));
+          const timer = setInterval(() => {
+            current += step;
+            if (current >= target) {
+              current = target;
+              clearInterval(timer);
+            }
+            el.textContent = current + (target === 53 ? '%' : '');
+          }, 28);
+          statObserver.unobserve(el);
+          el.style.willChange = 'contents';
+        }
+      });
+    }, { threshold: 0.4 });
+
+    document.querySelectorAll('.stat-number').forEach(el => statObserver.observe(el));
+  </script>
+</body>
+</html>
